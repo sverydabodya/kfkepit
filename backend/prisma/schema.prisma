@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+  // output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+model User {
+  id        String     @id @default(uuid())
+  name      String
+  pass      String
+  role      Role
+  course    Course?    @relation(fields: [courseId], references: [id])
+  courseId  String?
+  group     Group?     @relation(fields: [groupId], references: [id])
+  groupId   String?
+  subjects  Subject[]
+  materials Material[]
+}
+
+enum Role {
+  student
+  teacher
+  admin
+}
+
+model Material {
+  id        String   @id @default(uuid())
+  name      String
+  files     String[] @default([])
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  group     Group?   @relation(fields: [groupId], references: [id])
+  groupId   String?
+  subject   Subject  @relation(fields: [subjectId], references: [id])
+  subjectId String
+  createdAt DateTime @default(now())
+}
+
+model Schedule {
+  id        String   @id @default(uuid())
+  name      String
+  file      String
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  String   @unique
+  createdAt DateTime @default(now())
+}
+
+model Subject {
+  id        String     @id @default(uuid())
+  name      String
+  teacher   User       @relation(fields: [teacherId], references: [id])
+  teacherId String
+  groups    Group[]
+  materials Material[]
+}
+
+model Course {
+  id       String    @id @default(uuid())
+  name     String
+  students User[]
+  groups   Group[]
+  schedule Schedule?
+}
+
+model Group {
+  id        String     @id @default(uuid())
+  name      String
+  course    Course     @relation(fields: [courseId], references: [id])
+  courseId  String
+  students  User[]
+  subjects  Subject[]
+  materials Material[]
+}
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String
+  expiresAt DateTime
+}
