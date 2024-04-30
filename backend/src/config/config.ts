@@ -18,6 +18,8 @@ export const sesssionConfig: expressSession.SessionOptions = {
 	saveUninitialized: false,
 	cookie: {
 		maxAge: 60 * 60 * 1000,
+		httpOnly: true,
+		// secure: true,
 	},
 	rolling: true,
 	store: sessionStore,
@@ -27,15 +29,30 @@ export const multerConfig: multer.Options = {
 	limits: {
 		fileSize: 25 * 1024 * 1024, // 25MB limit
 	},
+	fileFilter: function (req, file, cb) {
+		try {
+			if (
+				file.mimetype !==
+					"application/vnd.openxmlformats-officedocument.wordprocessingml.document" &&
+				file.mimetype !== "application/pdf" &&
+				file.mimetype !== "application/msword"
+			) {
+				return cb(null, false);
+			} else if (!file.originalname.match(/\.(doc|docx|pdf)$/)) {
+				return cb(null, false);
+			} else {
+				cb(null, true);
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	},
 	storage: multer.diskStorage({
 		destination: function (req, file, cb) {
 			cb(null, path.join(__dirname, "..", "..", "/public/materials"));
 		},
 		filename: function (req, file, cb) {
-			file.originalname = Buffer.from(file.originalname, "latin1").toString(
-				"utf8"
-			);
-			cb(null, file.originalname);
+			cb(null, decodeURIComponent(file.originalname));
 		},
 	}),
 };

@@ -100,3 +100,15 @@ export const newMaterial = async (
 		throw new Error(`Failed to create material: ${error.message}`);
 	}
 };
+
+export const deleteMaterial = async (materialId: string) => {
+	try {
+		const material = await prisma.material.delete({
+			where: { id: materialId },
+		});
+
+		return material;
+	} catch (error) {
+		throw new Error(`Failed to delete material: ${error.message}`);
+	}
+};

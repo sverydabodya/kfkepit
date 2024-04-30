@@ -55,4 +55,11 @@ router.post(
 	MaterialsController.newMaterial
 );
 
+router.delete(
+	"/delete/:id",
+	isTeacher,
+	validateRequestParams(z.object({ id: z.string() })),
+	MaterialsController.deleteMaterial
+);
+
 export default router;

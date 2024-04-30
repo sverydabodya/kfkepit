@@ -16,6 +16,7 @@ app.use(expressSession(sesssionConfig));
 app.use(cors());
 //helmet needs configuration and maybe useless
 app.use(helmet());
+//todo add rate limiter, cache
 app.use(morgan("dev"));
 app.use(express.json());
 

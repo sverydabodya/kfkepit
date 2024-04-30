@@ -12,6 +12,10 @@ export const getAllMaterials: RequestHandler = async (req, res, next) => {
 			},
 		});
 
+		if (!materials) {
+			throw createHttpError(404, "Materials not found");
+		}
+
 		res.status(200).json(materials);
 	} catch (error) {
 		next(error);
@@ -25,6 +29,12 @@ export const getMaterialById: RequestHandler = async (req, res, next) => {
 		const material = await prisma.material.findFirst({
 			where: { id: materialId },
 		});
+
+		if (!material) {
+			throw createHttpError(404, "Material not found");
+		}
+
+		res.status(200).json(material);
 	} catch (error) {
 		next(error);
 	}
@@ -137,6 +147,22 @@ export const newMaterial: RequestHandler<
 		);
 
 		res.status(200).json(material);
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const deleteMaterial: RequestHandler = async (req, res, next) => {
+	const materialId = req.params.id;
+
+	try {
+		const material = await MaterialsService.deleteMaterial(materialId);
+
+		if (!material) {
+			throw createHttpError(404, "Material not found");
+		}
+
+		res.status(200).json({ success: true });
 	} catch (error) {
 		next(error);
 	}

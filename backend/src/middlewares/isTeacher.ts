@@ -6,6 +6,6 @@ export const isTeacher: RequestHandler = (req, res, next) => {
 	if (req.session.user.role === Role.teacher) {
 		next();
 	} else {
-		throw createHttpError(401, "Unauthorized");
+		throw createHttpError(403, "Forbidden");
 	}
 };
