@@ -46,7 +46,7 @@ export const login: RequestHandler<unknown, unknown, LoginBody> = async (
 		if (rememberMe === "on") req.session.cookie.maxAge = null;
 
 		req.session.save(() => {
-			res.status(200).json(user);
+			res.status(200).json(sessionUser);
 		});
 	} catch (error) {
 		next(error);

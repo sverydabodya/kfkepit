@@ -1,5 +1,11 @@
 import express from "express";
 import multer from "multer";
+import {
+	validateRequest,
+	validateRequestBody,
+	validateRequestParams,
+} from "zod-express-middleware";
+import { z } from "zod";
 import * as MaterialsController from "../controllers/materials";
 import { isTeacher } from "../middlewares/isTeacher";
 import { multerConfig } from "../config/config";
@@ -7,9 +13,27 @@ import { multerConfig } from "../config/config";
 const router = express.Router();
 const upload = multer(multerConfig);
 
-router.get("/subject/:subject", MaterialsController.getMaterialsBySubject);
-router.get("/group", MaterialsController.getMaterialsByGroup);
-router.get("/more", MaterialsController.getMoreMaterials);
+router.get(
+	"/subject/:subject",
+	validateRequestParams(z.object({ subject: z.string() })),
+	MaterialsController.getMaterialsBySubject
+);
+router.get(
+	"/group/:group",
+	validateRequest({
+		params: z.object({ group: z.string() }),
+		query: z.object({ subject: z.string() }),
+	}),
+	MaterialsController.getMaterialsByGroup
+);
+router.get(
+	"/more/:page",
+	validateRequest({
+		params: z.object({ page: z.string() }),
+		query: z.object({ subject: z.string() }),
+	}),
+	MaterialsController.getMoreMaterials
+);
 
 router.post(
 	"/new",
@@ -21,6 +45,13 @@ router.post(
 		{ name: "file4", maxCount: 1 },
 		{ name: "file5", maxCount: 1 },
 	]),
+	validateRequestBody(
+		z.object({
+			materialName: z.string(),
+			group: z.string(),
+			subject: z.string(),
+		})
+	),
 	MaterialsController.newMaterial
 );
 

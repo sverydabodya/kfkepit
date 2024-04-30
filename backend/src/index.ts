@@ -3,6 +3,7 @@ import morgan from "morgan";
 import express from "express";
 import expressSession from "express-session";
 import cors from "cors";
+import helmet from "helmet";
 import mainRouter from "./routes/index";
 import { errorHandler } from "./middlewares/errorHandler";
 import { sesssionConfig } from "./config/config";
@@ -13,6 +14,8 @@ const port = process.env.PORT || 5000;
 app.use(expressSession(sesssionConfig));
 
 app.use(cors());
+//helmet needs configuration and maybe useless
+app.use(helmet());
 app.use(morgan("dev"));
 app.use(express.json());
 

@@ -2,6 +2,7 @@ import prisma from "../services/db";
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import * as MaterialsService from "../services/materials";
 import { Material } from "@prisma/client";
+import createHttpError from "http-errors";
 
 export const getAllMaterials: RequestHandler = async (req, res, next) => {
 	try {
@@ -42,22 +43,21 @@ export const getMaterialsBySubject: RequestHandler<
 		);
 
 		if (materials.length === 0) {
-			res.status(404);
+			throw createHttpError(404, "Materials not found");
 		}
-
-		res.status(200).json(materials as Material[]);
+		res.status(200).json(materials);
 	} catch (error) {
 		next(error);
 	}
 };
 
 export const getMoreMaterials: RequestHandler<
-	unknown,
+	any,
 	Material[],
 	unknown,
 	moreMaterialsQuery
 > = async (req, res, next) => {
-	const page = req.query.page;
+	const page = req.params.page;
 	const subjectName = req.query.subject;
 	const user = req.session.user;
 
@@ -68,21 +68,27 @@ export const getMoreMaterials: RequestHandler<
 			page
 		);
 
-		res.status(200).json(materials as Material[]);
+		if (materials.length === 0) {
+			throw createHttpError(404, "Materials not found");
+		}
+
+		res.status(200).json(materials);
 	} catch (error) {
 		next(error);
 	}
 };
 
 export const getMaterialsByGroup: RequestHandler<
-	unknown,
+	any,
 	Material[],
 	unknown,
 	groupMaterialsQuery
 > = async (req, res, next) => {
 	const subject = req.query.subject;
-	const group = req.query.group;
+	const group = req.params.group;
 	const user = req.session.user;
+
+	console.log(subject, group);
 
 	try {
 		const materials = await MaterialsService.getMaterialsByGroup(
@@ -90,6 +96,10 @@ export const getMaterialsByGroup: RequestHandler<
 			subject,
 			user
 		);
+
+		if (materials.length === 0) {
+			throw createHttpError(404, "Materials not found");
+		}
 
 		res.status(200).json(materials);
 	} catch (error) {

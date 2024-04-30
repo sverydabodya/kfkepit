@@ -1,10 +1,15 @@
 import { RequestHandler } from "express";
 import * as ScheludesService from "../services/schedules";
 import prisma from "../services/db";
+import createHttpError from "http-errors";
 
-export const getScheduleByCourse: RequestHandler = async (req, res, next) => {
+export const getAllSchedules: RequestHandler = async (req, res, next) => {
 	try {
 		const schedules = await ScheludesService.getAllScheludes();
+
+		if (schedules.length === 0) {
+			throw createHttpError(404, "Schedules not found");
+		}
 
 		res.status(200).json(schedules);
 	} catch (error) {
@@ -21,6 +26,10 @@ export const getSchedule: RequestHandler = async (req, res, next) => {
 				file: "schedules/" + path,
 			},
 		});
+
+		if (!schedule) {
+			throw createHttpError(404, "Schedule not found");
+		}
 
 		res.status(200).json(schedule);
 	} catch (error) {
