@@ -1,17 +1,27 @@
 import prisma from "./db";
 
 export const getScheduleByCourse = async (courseId: string) => {
-	const schelude = await prisma.schedule.findFirst({
-		where: {
-			courseId: courseId,
-		},
-	});
+	try {
+		const schelude = await prisma.schedule.findFirst({
+			where: {
+				courseId: courseId,
+			},
+		});
 
-	return schelude;
+		return schelude;
+	} catch (error) {
+		console.error(error);
+		throw new Error(`Failed to fetch: ${error.message}`);
+	}
 };
 
 export const getAllScheludes = async () => {
-	const scheludes = await prisma.schedule.findMany({});
+	try {
+		const scheludes = await prisma.schedule.findMany({});
 
-	return scheludes;
+		return scheludes;
+	} catch (error) {
+		console.error(error);
+		throw new Error(`Failed to fetch: ${error.message}`);
+	}
 };

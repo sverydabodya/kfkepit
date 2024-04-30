@@ -1,8 +1,8 @@
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import multer from "multer";
 import path from "path";
-import prisma from "../services/db";
 import expressSession from "express-session";
+import prisma from "../services/db";
 
 const sessionSecret = process.env.SESSION_SECRET;
 
@@ -23,7 +23,7 @@ export const sesssionConfig: expressSession.SessionOptions = {
 	store: sessionStore,
 };
 
-export const multerConfig = {
+export const multerConfig: multer.Options = {
 	limits: {
 		fileSize: 25 * 1024 * 1024, // 25MB limit
 	},

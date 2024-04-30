@@ -1,5 +1,5 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
-import createHttpError, { isHttpError } from "http-errors";
+import { isHttpError } from "http-errors";
 
 export const errorHandler: ErrorRequestHandler = (
 	error: unknown,
@@ -8,11 +8,20 @@ export const errorHandler: ErrorRequestHandler = (
 	next: NextFunction
 ) => {
 	console.error(error);
-	let errorMessage = "An unknown error";
-	let statusCode = 500;
+
+	let errorMessage: string;
+	let statusCode: number;
+
 	if (isHttpError(error)) {
-		statusCode = error.status;
-		errorMessage = error.message;
+		statusCode = error.statusCode || 500;
+		errorMessage = error.message || "An unknown error occurred";
+	} else if (error instanceof Error) {
+		statusCode = 500;
+		errorMessage = error.message || "An unknown error occurred";
+	} else {
+		statusCode = 500;
+		errorMessage = "An unknown error occurred";
 	}
+
 	res.status(statusCode).json({ error: errorMessage });
 };

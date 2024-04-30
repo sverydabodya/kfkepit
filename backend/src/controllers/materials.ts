@@ -1,20 +1,20 @@
 import prisma from "../services/db";
 import { NextFunction, Request, RequestHandler, Response } from "express";
-import Role from "../models/role";
 import * as MaterialsService from "../services/materials";
-import { baseURL } from "../config/config";
+import { Material } from "@prisma/client";
 
-export const getAllMaterials: RequestHandler = async (req, res) => {
-	const user = req.session.user;
-	let materials;
+export const getAllMaterials: RequestHandler = async (req, res, next) => {
+	try {
+		const materials = await prisma.material.findMany({
+			orderBy: {
+				createdAt: "desc",
+			},
+		});
 
-	materials = await prisma.material.findMany({
-		orderBy: {
-			createdAt: "desc",
-		},
-	});
-
-	res.status(200).json(materials);
+		res.status(200).json(materials);
+	} catch (error) {
+		next(error);
+	}
 };
 
 export const getMaterialById: RequestHandler = async (req, res, next) => {
@@ -24,27 +24,28 @@ export const getMaterialById: RequestHandler = async (req, res, next) => {
 		const material = await prisma.material.findFirst({
 			where: { id: materialId },
 		});
-
-		// res.render("sections/courses", { materials: material});
 	} catch (error) {
 		next(error);
 	}
 };
 
-export const getMaterialsBySubject: RequestHandler = async (req, res, next) => {
+export const getMaterialsBySubject: RequestHandler<
+	{ subject: string },
+	Material[]
+> = async (req, res, next) => {
 	const subjectName = req.params.subject;
 	const user = req.session.user;
 	try {
-		const [materials, groups] = await MaterialsService.getMaterialsBySubject(
+		const materials = await MaterialsService.getMaterialsBySubject(
 			user,
 			subjectName
 		);
 
-		if (materials.length === 0 && groups.length === 0) {
-			res.redirect("/");
+		if (materials.length === 0) {
+			res.status(404);
 		}
 
-		res.status(200).json(materials);
+		res.status(200).json(materials as Material[]);
 	} catch (error) {
 		next(error);
 	}
@@ -52,7 +53,7 @@ export const getMaterialsBySubject: RequestHandler = async (req, res, next) => {
 
 export const getMoreMaterials: RequestHandler<
 	unknown,
-	unknown,
+	Material[],
 	unknown,
 	moreMaterialsQuery
 > = async (req, res, next) => {
@@ -61,21 +62,21 @@ export const getMoreMaterials: RequestHandler<
 	const user = req.session.user;
 
 	try {
-		const [materials] = await MaterialsService.getMaterialsBySubject(
+		const materials = await MaterialsService.getMaterialsBySubject(
 			user,
 			subjectName,
 			page
 		);
 
-		res.status(200).json(materials);
+		res.status(200).json(materials as Material[]);
 	} catch (error) {
-		console.error(error);
+		next(error);
 	}
 };
 
 export const getMaterialsByGroup: RequestHandler<
 	unknown,
-	unknown,
+	Material[],
 	unknown,
 	groupMaterialsQuery
 > = async (req, res, next) => {
@@ -98,7 +99,7 @@ export const getMaterialsByGroup: RequestHandler<
 
 export const newMaterial: RequestHandler<
 	unknown,
-	unknown,
+	Material,
 	newMaterialBody
 > = async (req: Request & MulterRequest, res: Response, next: NextFunction) => {
 	const materialName = req.body.materialName;

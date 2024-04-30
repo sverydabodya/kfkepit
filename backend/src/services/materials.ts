@@ -1,4 +1,3 @@
-import Role from "../models/role";
 import SessionUser from "../models/sessionUser";
 import prisma from "./db";
 
@@ -9,49 +8,22 @@ export const getMaterialsBySubject = async (
 	take: number = 10
 ) => {
 	try {
-		if (user.role === Role.Teacher) {
-			//maybe will be better without transaction
-			const [materials, groups] = await prisma.$transaction([
-				prisma.material.findMany({
-					where: {
-						subject: {
-							name: subjectName,
-						},
-						authorId: user.id,
-					},
-					orderBy: {
-						createdAt: "desc",
-					},
-					take,
-					skip: page ? parseInt(page) * take : 0,
-				}),
-				prisma.group.findMany({
-					where: {
-						subjects: {
-							some: {
-								name: subjectName,
-							},
-						},
-					},
-				}),
-			]);
+		const materials = await prisma.material.findMany({
+			where: {
+				subject: { name: subjectName },
+				groupId: user.groupId,
+			},
+			orderBy: {
+				createdAt: "desc",
+			},
+			take,
+			skip: page ? parseInt(page) * take : 0,
+		});
 
-			return [materials, groups];
-		} else {
-			const materials = await prisma.material.findMany({
-				where: {
-					subject: { name: subjectName },
-					groupId: user.groupId,
-				},
-				orderBy: {
-					createdAt: "desc",
-				},
-			});
-
-			return [materials];
-		}
+		return materials;
 	} catch (error) {
 		console.error(error);
+		throw new Error(`Failed to fetch: ${error.message}`);
 	}
 };
 
@@ -88,6 +60,7 @@ export const getMaterialsByGroup = async (
 		return materials;
 	} catch (error) {
 		console.error(error);
+		throw new Error(`Failed to fetch: ${error.message}`);
 	}
 };
 

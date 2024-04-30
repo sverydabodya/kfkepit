@@ -1,4 +1,4 @@
-import Role from "./role";
+import { Role } from "@prisma/client";
 
 type SessionUser = {
 	id: string;

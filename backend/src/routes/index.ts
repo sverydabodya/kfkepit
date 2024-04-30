@@ -3,14 +3,18 @@ import usersRouter from "./users";
 import materialsRouter from "./materials";
 import schedulesRouter from "./schedules";
 import subjectsRouter from "./subjects";
-import * as MaterialsController from "../controllers/materials";
+import { auth } from "../middlewares/auth";
 
 const router = express.Router();
 
-router.get("/", MaterialsController.getAllMaterials);
 router.use("/users", usersRouter);
+router.use(auth);
 router.use("/materials", materialsRouter);
 router.use("/schedules", schedulesRouter);
 router.use("/subjects", subjectsRouter);
+
+router.all("*", (req, res) => {
+	res.status(404).json({ error: "Route does not exist" });
+});
 
 export default router;

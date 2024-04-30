@@ -7,10 +7,7 @@ import { multerConfig } from "../config/config";
 const router = express.Router();
 const upload = multer(multerConfig);
 
-router.get(
-	"/subject/:subject",
-	MaterialsController.getMaterialsBySubject
-);
+router.get("/subject/:subject", MaterialsController.getMaterialsBySubject);
 router.get("/group", MaterialsController.getMaterialsByGroup);
 router.get("/more", MaterialsController.getMoreMaterials);
 
