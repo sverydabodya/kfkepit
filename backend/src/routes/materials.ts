@@ -1,21 +1,17 @@
 import express from "express";
 import multer from "multer";
-import {
-	validateRequest,
-	validateRequestBody,
-	validateRequestParams,
-} from "zod-express-middleware";
 import { z } from "zod";
 import * as MaterialsController from "../controllers/materials";
 import { isTeacher } from "../middlewares/isTeacher";
 import { multerConfig } from "../config/config";
+import { validateRequest } from "../middlewares/validateRequest";
 
 const router = express.Router();
 const upload = multer(multerConfig);
 
 router.get(
 	"/subject/:subject",
-	validateRequestParams(z.object({ subject: z.string() })),
+	validateRequest({ params: z.object({ subject: z.string() }) }),
 	MaterialsController.getMaterialsBySubject
 );
 router.get(
@@ -45,20 +41,20 @@ router.post(
 		{ name: "file4", maxCount: 1 },
 		{ name: "file5", maxCount: 1 },
 	]),
-	validateRequestBody(
-		z.object({
+	validateRequest({
+		body: z.object({
 			materialName: z.string(),
 			group: z.string(),
 			subject: z.string(),
-		})
-	),
+		}),
+	}),
 	MaterialsController.newMaterial
 );
 
 router.delete(
 	"/delete/:id",
 	isTeacher,
-	validateRequestParams(z.object({ id: z.string() })),
+	validateRequest({ params: z.object({ id: z.string() }) }),
 	MaterialsController.deleteMaterial
 );
 

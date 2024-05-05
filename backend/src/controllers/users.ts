@@ -1,8 +1,8 @@
 import { RequestHandler } from "express";
-import SessionUser from "../models/sessionUser";
 import { Role } from "@prisma/client";
-import * as UserService from "../services/users";
 import createHttpError from "http-errors";
+import * as UserService from "../services/users";
+import SessionUser from "../models/SessionUser";
 
 export const login: RequestHandler<unknown, unknown, LoginBody> = async (
 	req,

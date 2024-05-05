@@ -1,5 +1,31 @@
-import SessionUser from "../models/sessionUser";
+import SessionUser from "../models/SessionUser";
 import prisma from "./db";
+
+export const getAllMaterials = async () => {
+	try {
+		const materials = await prisma.material.findMany({
+			orderBy: {
+				createdAt: "desc",
+			},
+		});
+
+		return materials;
+	} catch (error) {
+		throw new Error(`Failed to fetch: ${error.message}`);
+	}
+};
+
+export const getMaterialById = async (materialId: string) => {
+	try {
+		const material = await prisma.material.findFirst({
+			where: { id: materialId },
+		});
+
+		return material;
+	} catch (error) {
+		throw new Error(`Failed to fetch: ${error.message}`);
+	}
+};
 
 export const getMaterialsBySubject = async (
 	user: SessionUser,

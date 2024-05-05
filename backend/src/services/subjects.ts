@@ -1,5 +1,5 @@
 import prisma from "./db";
-import SessionUser from "../models/sessionUser";
+import SessionUser from "../models/SessionUser";
 
 export const getAllSubjects = async (user: SessionUser) => {
 	try {

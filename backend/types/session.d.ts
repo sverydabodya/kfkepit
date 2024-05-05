@@ -1,4 +1,4 @@
-import SessionUser from "../src/models/sessionUser";
+import SessionUser from "../src/models/SessionUser";
 
 declare module "express-session" {
 	interface Session {

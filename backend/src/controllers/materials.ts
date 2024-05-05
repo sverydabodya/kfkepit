@@ -1,4 +1,3 @@
-import prisma from "../services/db";
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import * as MaterialsService from "../services/materials";
 import { Material } from "@prisma/client";
@@ -6,11 +5,7 @@ import createHttpError from "http-errors";
 
 export const getAllMaterials: RequestHandler = async (req, res, next) => {
 	try {
-		const materials = await prisma.material.findMany({
-			orderBy: {
-				createdAt: "desc",
-			},
-		});
+		const materials = await MaterialsService.getAllMaterials();
 
 		if (!materials) {
 			throw createHttpError(404, "Materials not found");
@@ -26,9 +21,7 @@ export const getMaterialById: RequestHandler = async (req, res, next) => {
 	const materialId = req.params.id;
 
 	try {
-		const material = await prisma.material.findFirst({
-			where: { id: materialId },
-		});
+		const material = await MaterialsService.getMaterialById(materialId);
 
 		if (!material) {
 			throw createHttpError(404, "Material not found");

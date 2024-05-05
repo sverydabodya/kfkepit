@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
-import { validateRequest } from "zod-express-middleware";
 import { z } from "zod";
+import { validateRequest } from "../middlewares/validateRequest";
 import * as usersController from "../controllers/users";
 import { auth } from "../middlewares/auth";
 
