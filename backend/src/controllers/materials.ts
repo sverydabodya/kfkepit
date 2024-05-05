@@ -35,34 +35,13 @@ export const getMaterialById: RequestHandler = async (req, res, next) => {
 
 export const getMaterialsBySubject: RequestHandler<
 	{ subject: string },
-	Material[]
+	Material[],
+	unknown,
+	{ page?: string }
 > = async (req, res, next) => {
 	const subjectName = req.params.subject;
 	const user = req.session.user;
-	try {
-		const materials = await MaterialsService.getMaterialsBySubject(
-			user,
-			subjectName
-		);
-
-		if (materials.length === 0) {
-			throw createHttpError(404, "Materials not found");
-		}
-		res.status(200).json(materials);
-	} catch (error) {
-		next(error);
-	}
-};
-
-export const getMoreMaterials: RequestHandler<
-	any,
-	Material[],
-	unknown,
-	moreMaterialsQuery
-> = async (req, res, next) => {
-	const page = req.params.page;
-	const subjectName = req.query.subject;
-	const user = req.session.user;
+	const page = req.query.page;
 
 	try {
 		const materials = await MaterialsService.getMaterialsBySubject(
@@ -74,7 +53,6 @@ export const getMoreMaterials: RequestHandler<
 		if (materials.length === 0) {
 			throw createHttpError(404, "Materials not found");
 		}
-
 		res.status(200).json(materials);
 	} catch (error) {
 		next(error);
@@ -88,16 +66,16 @@ export const getMaterialsByGroup: RequestHandler<
 	groupMaterialsQuery
 > = async (req, res, next) => {
 	const subject = req.query.subject;
+	const page = req.query.page;
 	const group = req.params.group;
 	const user = req.session.user;
-
-	console.log(subject, group);
 
 	try {
 		const materials = await MaterialsService.getMaterialsByGroup(
 			group,
 			subject,
-			user
+			user,
+			page
 		);
 
 		if (materials.length === 0) {

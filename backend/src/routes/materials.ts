@@ -11,24 +11,19 @@ const upload = multer(multerConfig);
 
 router.get(
 	"/subject/:subject",
-	validateRequest({ params: z.object({ subject: z.string() }) }),
+	validateRequest({
+		params: z.object({ subject: z.string() }),
+		query: z.object({ page: z.string().optional() }),
+	}),
 	MaterialsController.getMaterialsBySubject
 );
 router.get(
 	"/group/:group",
 	validateRequest({
 		params: z.object({ group: z.string() }),
-		query: z.object({ subject: z.string() }),
+		query: z.object({ subject: z.string(), page: z.string().optional() }),
 	}),
 	MaterialsController.getMaterialsByGroup
-);
-router.get(
-	"/more/:page",
-	validateRequest({
-		params: z.object({ page: z.string() }),
-		query: z.object({ subject: z.string() }),
-	}),
-	MaterialsController.getMoreMaterials
 );
 
 router.post(

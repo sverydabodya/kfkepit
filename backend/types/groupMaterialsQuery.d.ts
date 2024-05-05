@@ -1,4 +1,4 @@
 type groupMaterialsQuery = {
 	subject: string;
-	group: string;
+	page?: string;
 };

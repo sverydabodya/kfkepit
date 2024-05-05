@@ -56,7 +56,9 @@ export const getMaterialsBySubject = async (
 export const getMaterialsByGroup = async (
 	group: string,
 	subject: string,
-	user: SessionUser
+	user: SessionUser,
+	page: string = null,
+	take: number = 10
 ) => {
 	try {
 		let materials;
@@ -69,6 +71,8 @@ export const getMaterialsByGroup = async (
 				orderBy: {
 					createdAt: "desc",
 				},
+				take,
+				skip: page ? parseInt(page) * take : 0,
 			});
 		} else {
 			materials = await prisma.material.findMany({
@@ -80,6 +84,8 @@ export const getMaterialsByGroup = async (
 				orderBy: {
 					createdAt: "desc",
 				},
+				take,
+				skip: page ? parseInt(page) * take : 0,
 			});
 		}
 
