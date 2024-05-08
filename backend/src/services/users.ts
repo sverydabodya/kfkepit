@@ -1,4 +1,4 @@
-import prisma from "../services/db";
+import { prisma } from "../services/db";
 
 export const getUser = async (username: string, password: string) => {
 	try {

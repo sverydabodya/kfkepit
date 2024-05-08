@@ -2,7 +2,7 @@ import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import multer from "multer";
 import path from "path";
 import expressSession from "express-session";
-import prisma from "../services/db";
+import { prisma } from "../services/db";
 
 const sessionSecret = process.env.SESSION_SECRET;
 

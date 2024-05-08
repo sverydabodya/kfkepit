@@ -1,5 +1,5 @@
 import SessionUser from "../models/SessionUser";
-import prisma from "./db";
+import { kysely, prisma } from "./db";
 
 export const getAllMaterials = async () => {
 	try {
@@ -29,22 +29,32 @@ export const getMaterialById = async (materialId: string) => {
 
 export const getMaterialsBySubject = async (
 	user: SessionUser,
-	subjectName: string,
+	subjectId: string,
 	page: string = null,
 	take: number = 10
 ) => {
 	try {
-		const materials = await prisma.material.findMany({
-			where: {
-				subject: { name: subjectName },
-				groupId: user.groupId,
-			},
-			orderBy: {
-				createdAt: "desc",
-			},
-			take,
-			skip: page ? parseInt(page) * take : 0,
-		});
+		// const materials = await prisma.material.findMany({
+		// 	where: {
+		// 		subject: { name: subjectName },
+		// 		groupId: user.groupId,
+		// 	},
+		// 	orderBy: {
+		// 		createdAt: "desc",
+		// 	},
+		// 	take,
+		// 	skip: page ? parseInt(page) * take : 0,
+		// });
+
+		const materials = await kysely
+			.selectFrom("Material")
+			.selectAll()
+			.where("Material.subjectId", "=", subjectId)
+			// .where("Material.groupId", "=", user.groupId)
+			.orderBy("Material.createdAt", "desc")
+			.limit(take)
+			.offset(page ? parseInt(page) * take : 0)
+			.execute();
 
 		return materials;
 	} catch (error) {

@@ -1,4 +1,4 @@
-import prisma from "./db";
+import { prisma } from "./db";
 import SessionUser from "../models/SessionUser";
 
 export const getAllSubjects = async (user: SessionUser) => {

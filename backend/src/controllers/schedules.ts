@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import * as ScheludesService from "../services/schedules";
-import prisma from "../services/db";
+import { prisma } from "../services/db";
 import createHttpError from "http-errors";
 
 export const getAllSchedules: RequestHandler = async (req, res, next) => {
