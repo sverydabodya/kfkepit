@@ -4,6 +4,14 @@ import createHttpError from "http-errors";
 import * as UserService from "../services/users";
 import SessionUser from "../models/SessionUser";
 
+export const getAuthenticatedUser: RequestHandler = (req, res, next) => {
+	try {
+		res.status(200).json(req.session.user);
+	} catch (error) {
+		next(error);
+	}
+};
+
 export const login: RequestHandler<unknown, unknown, LoginBody> = async (
 	req,
 	res,

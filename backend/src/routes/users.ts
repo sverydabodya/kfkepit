@@ -8,6 +8,8 @@ import { auth } from "../middlewares/auth";
 const router = express.Router();
 const upload = multer();
 
+router.get("/", usersController.getAuthenticatedUser);
+
 router.post(
 	"/login",
 	upload.none(),

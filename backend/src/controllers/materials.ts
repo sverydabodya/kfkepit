@@ -100,9 +100,15 @@ export const newMaterial: RequestHandler<
 
 	try {
 		const filesPaths: string[] = [];
+
+		if (Object.keys(req.files).length === 0) {
+			throw createHttpError(400, "Invalid file type");
+		}
+
 		for (const key in req.files) {
 			if (Object.prototype.hasOwnProperty.call(req.files, key)) {
 				const fileArray = req.files[key];
+
 				for (const file of fileArray) {
 					filesPaths.push("materials/" + file.originalname);
 				}
