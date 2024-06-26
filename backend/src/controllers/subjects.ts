@@ -6,7 +6,7 @@ export const getAllSubjects: RequestHandler = async (req, res, next) => {
 	try {
 		const user = req.session.user;
 
-		const subjects = await SubjectsService.getAllSubjects(user);
+		const subjects = await SubjectsService.getAllSubjects(user.groupId);
 
 		if (subjects.length === 0) {
 			throw createHttpError(404, "Subjects not found");

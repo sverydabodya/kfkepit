@@ -4,6 +4,12 @@ import createHttpError from "http-errors";
 import * as UserService from "../services/users";
 import SessionUser from "../models/SessionUser";
 
+type LoginBody = {
+	username: string;
+	password: string;
+	rememberMe: string;
+};
+
 export const getAuthenticatedUser: RequestHandler = (req, res, next) => {
 	try {
 		res.status(200).json(req.session.user);
@@ -51,7 +57,8 @@ export const login: RequestHandler<unknown, unknown, LoginBody> = async (
 		}
 
 		req.session.user = sessionUser;
-		if (rememberMe === "on") req.session.cookie.maxAge = null;
+		if (rememberMe === "on")
+			req.session.cookie.maxAge = 365 * 24 * 60 * 60 * 1000; // 1 year
 
 		req.session.save(() => {
 			res.status(200).json(sessionUser);

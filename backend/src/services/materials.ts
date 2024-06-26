@@ -1,4 +1,3 @@
-import SessionUser from "../models/SessionUser";
 import prisma from "./db";
 
 export const getAllMaterials = async () => {
@@ -28,7 +27,7 @@ export const getMaterialById = async (materialId: string) => {
 };
 
 export const getMaterialsBySubject = async (
-	user: SessionUser,
+	groupId: string,
 	subjectName: string,
 	page: string = null,
 	take: number = 10
@@ -37,7 +36,7 @@ export const getMaterialsBySubject = async (
 		const materials = await prisma.material.findMany({
 			where: {
 				subject: { name: subjectName },
-				groupId: user.groupId,
+				groupId,
 			},
 			orderBy: {
 				createdAt: "desc",
@@ -56,7 +55,7 @@ export const getMaterialsBySubject = async (
 export const getMaterialsByGroup = async (
 	group: string,
 	subject: string,
-	user: SessionUser,
+	userId: string,
 	page: string = null,
 	take: number = 10
 ) => {
@@ -65,7 +64,7 @@ export const getMaterialsByGroup = async (
 		if (group === "all") {
 			materials = await prisma.material.findMany({
 				where: {
-					authorId: user.id,
+					authorId: userId,
 					subject: { name: subject },
 				},
 				orderBy: {
@@ -77,7 +76,7 @@ export const getMaterialsByGroup = async (
 		} else {
 			materials = await prisma.material.findMany({
 				where: {
-					authorId: user.id,
+					authorId: userId,
 					subject: { name: subject },
 					group: { name: group },
 				},

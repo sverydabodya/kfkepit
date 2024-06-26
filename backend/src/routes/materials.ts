@@ -27,7 +27,7 @@ router.get(
 );
 
 router.post(
-	"/new",
+	"/",
 	isTeacher,
 	upload.fields([
 		{ name: "file1", maxCount: 1 },
@@ -47,7 +47,7 @@ router.post(
 );
 
 router.delete(
-	"/delete/:id",
+	"/:id",
 	isTeacher,
 	validateRequest({ params: z.object({ id: z.string() }) }),
 	MaterialsController.deleteMaterial

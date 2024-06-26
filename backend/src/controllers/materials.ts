@@ -1,7 +1,18 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import * as MaterialsService from "../services/materials";
-import { Material } from "@prisma/client";
+import { Material, Prisma } from "@prisma/client";
 import createHttpError from "http-errors";
+
+interface groupMaterialsQuery {
+	subject: string;
+	page?: string;
+}
+
+interface newMaterialBody {
+	materialName: string;
+	group: string;
+	subject: string;
+}
 
 export const getAllMaterials: RequestHandler = async (req, res, next) => {
 	try {
@@ -45,7 +56,7 @@ export const getMaterialsBySubject: RequestHandler<
 
 	try {
 		const materials = await MaterialsService.getMaterialsBySubject(
-			user,
+			user.groupId,
 			subjectName,
 			page
 		);
@@ -63,7 +74,7 @@ export const getMaterialsByGroup: RequestHandler<
 	any,
 	Material[],
 	unknown,
-	groupMaterialsQuery
+	any
 > = async (req, res, next) => {
 	const subject = req.query.subject;
 	const page = req.query.page;
@@ -74,7 +85,7 @@ export const getMaterialsByGroup: RequestHandler<
 		const materials = await MaterialsService.getMaterialsByGroup(
 			group,
 			subject,
-			user,
+			user.id,
 			page
 		);
 
@@ -91,7 +102,7 @@ export const getMaterialsByGroup: RequestHandler<
 export const newMaterial: RequestHandler<
 	unknown,
 	Material,
-	newMaterialBody
+	Prisma.MaterialCreateInput
 > = async (req: Request & MulterRequest, res: Response, next: NextFunction) => {
 	const materialName = req.body.materialName;
 	const group = req.body.group;

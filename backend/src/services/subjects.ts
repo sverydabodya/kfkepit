@@ -1,11 +1,11 @@
 import prisma from "./db";
 import SessionUser from "../models/SessionUser";
 
-export const getAllSubjects = async (user: SessionUser) => {
+export const getAllSubjects = async (groupId: string) => {
 	try {
 		const subjects = await prisma.group.findFirst({
 			where: {
-				id: user.groupId,
+				id: groupId,
 			},
 			select: {
 				subjects: true,
