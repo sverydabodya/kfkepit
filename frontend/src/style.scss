@@ -69,10 +69,17 @@ body{
     }
     
 }
-.swiper-pagination-bullet{
-    background: antiquewhite;
-} 
-.swiper-pagination-bullet-active {
-
-    background: antiquewhite;
-}
+.swiper-pagination-bullet {
+    width: 15px;
+    height: 10px;
+    background: linear-gradient(260deg, #A8CBFF 0%, #A8CBFF 0%, #A8CBFF 0%, #EBAEC8 100%);
+    border-radius: 7.50px;
+  }
+  
+  .swiper-pagination-bullet-active {
+    width: 15px;
+    height: 10px;
+    background: linear-gradient(260deg, #A8CBFF 0%, #A8CBFF 0%, #A8CBFF 0%, #EBAEC8 100%);
+    border-radius: 7.50px;
+  }
+  

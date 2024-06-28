@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
 import "./style.scss";
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import HomePage from './components/HomePage.tsx';
 import AuthPage from './components/AuthPage.tsx';
 import NotFound from './components/NotFound.tsx';
+import NewsPage from './components/NewsPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -16,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: '/auth',
     element: <AuthPage/>
+  },
+  {
+    path: '/news',
+    element: <NewsPage/>
   }
 ])
 

@@ -1,11 +1,13 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from 'react';
 import classes from './Header.module.scss';
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
 
 
 const Header:FC = () => {
 
+
+    
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
@@ -28,10 +30,10 @@ const Header:FC = () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
-    
+
+
 
     return ( 
-
         <header className={`${classes.header} ${isScrolled ? classes.scroll : ''}`}>
             <div className={classes.header__container}>
                 <NavLink to={"/"} className={classes.header__logo}>
@@ -61,12 +63,6 @@ const Header:FC = () => {
                             <NavLink className={classes.menu__link} to={"/news"}>Новини</NavLink>
                         </li>
                     </ul>
-                    <div className={classes.header__link}>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9 4.44444L7.6 6L10.2 8.88889H0V11.1111H10.2L7.6 14L9 15.5556L14 10L9 4.44444ZM18 17.7778H10V20H18C19.1 20 20 19 20 17.7778V2.22222C20 1 19.1 0 18 0H10V2.22222H18V17.7778Z" fill="black"/>
-                            </svg>
-                            <NavLink to={"/auth"}>Увійти</NavLink>
-                    </div>
                     <div className={classes.header__socials}>
                         <a href="">
                             <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -93,7 +89,6 @@ const Header:FC = () => {
                 </nav>
             </div>
         </header>
-
      );
 }
 

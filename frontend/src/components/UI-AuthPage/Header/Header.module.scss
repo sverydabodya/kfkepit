@@ -1,6 +1,6 @@
 
 .scroll{
-    background-color: aliceblue;
+    background: linear-gradient(260deg, #A8CBFF 0%, #A8CBFF 0%, #A8CBFF 0%, #EBAEC8 100%);
     
 }
 
@@ -20,9 +20,10 @@
         margin: 0 auto;
         align-items: center;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         @media (max-width:50.0625em) {
             min-height: 70px;
+            justify-content: space-between;
         }
     }
     &__logo{
@@ -77,37 +78,6 @@
             }
         }
     }
-    &__link{
-        background: linear-gradient(260deg, #A8CBFF 0%, #A8CBFF 0%, #A8CBFF 0%, #EBAEC8 100%);
-        border-radius: 17px;
-        padding: 10px 50px;
-        transition: all 0.3s ease 0s;
-        z-index: 1;
-        @media (max-width:50.0625em) {
-            background: none;  
-            padding: 0;
-            margin-top: 15px; 
-            display: flex;
-            align-items: center;
-            column-gap: 10px;
-        }
-        svg{
-            display: none;
-            @media (max-width:50.0625em) {
-                display: block;
-            }
-        }
-        
-        
-        &:hover{
-            background: linear-gradient(260deg, #8ebbff 0%, #91bdff 0%, #8dbafd 0%, #e999bb 100%);
-            transform: scale(1.1);
-            @media (max-width:50.0625em) {
-                background: none;
-                transform: scale(0.9999999);
-            }
-        }
-    }
 }
 .menu{
     &::before{
@@ -124,9 +94,12 @@
     }
     &__items{
         align-items: center;
-        display: flex;
+        display: none;
         margin-right: 6.25rem;
         column-gap: 1.875rem;
+        @media (max-width:50.0625em) {
+            display: flex;
+        }
         svg{
             display: none;
             @media (max-width:50.0625em) {
@@ -141,9 +114,12 @@
         }
     }
     &__item{
-        display: flex;
         align-items: center;
         column-gap: 10px;
+        display: none;
+            @media (max-width:50.0625em) {
+                display: flex;
+            }
     }
     &__link{
         position: relative;

@@ -1,0 +1,139 @@
+$maxWidth: 1920;
+$maxWidthContainer: 1000;
+
+@mixin adaptive-value($property, $startSize, $minSize, $type) {
+    $addSize: $startSize - $minSize;
+    @if $type== 1 {
+        #{$property}: $startSize + px;
+        @media (max-width: #{$maxWidthContainer + px}) {
+            #{$property}: calc(#{$minSize + px} + #{$addSize} * ((100vw - 320px) / #{$maxWidthContainer - 320}));
+        }
+    } @else if $type== 2 {
+        #{$property}: $startSize + px;
+        @media (min-width: #{$maxWidthContainer + px}) {
+            #{$property}: calc(#{$minSize + px} + #{$addSize} * ((100vw - 320px) / #{$maxWidth - 320}));
+        }
+    } @else {
+        #{$property}: calc(#{$minSize + px} + #{$addSize} * ((100vw - 320px) / #{$maxWidth - 320}));
+    }
+}
+
+
+
+
+
+.form{
+    @include adaptive-value(padding-top, 300, 100, 1);
+    max-width: 500px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 0 auto;
+
+    &__title{
+        text-align: center;
+        font-size: 1.25rem;
+        @include adaptive-value(margin-bottom, 50, 25, 1);
+    }
+    &__input{
+        padding: 20px;
+        display: flex;
+        background-color: #ffffff50;
+        border-radius: 10px;
+        font-size: 0.875rem;
+        @include adaptive-value(margin-bottom, 25, 15, 1);
+        @include adaptive-value(width, 500, 260, 1);
+    }
+    &__remember{
+        display: flex;
+        @include adaptive-value(margin-bottom, 25, 15, 1);
+        font-size: 1.0625rem;
+        align-items: center;
+        column-gap: 10px;
+    }
+    &__button{
+        background-color: #000;
+        color: #fff;
+        border-radius: 17px;
+        padding: 0.625rem 3.125rem;
+        transition: all 0.3s ease 0s;
+        margin-bottom: 10px;
+        &:hover{
+            transform: scale(1.07);
+        }
+    }
+    @media (max-width:50.0625em) {
+      div{
+        text-align: center;
+      }
+  }
+
+}
+
+
+  .checkboxWrapper30 .checkbox {
+    --bg: #fff;
+    --brdr: #d1d6ee;
+    --brdr-actv: #1e2235;
+    --brdr-hovr: #bbc1e1;
+    --dur: calc((var(--size, 2)/2) * 0.6s);
+    display: inline-block;
+    width: calc(var(--size, 1) * 22px);
+    position: relative;
+  }
+  .checkboxWrapper30 .checkbox:after {
+    content: "";
+    width: 100%;
+    padding-top: 100%;
+    display: block;
+  }
+  .checkboxWrapper30 .checkbox > * {
+    position: absolute;
+  }
+  .checkboxWrapper30 .checkbox input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    background-color: var(--bg);
+    border-radius: calc(var(--size, 1) * 4px);
+    border: calc(var(--newBrdr, var(--size, 1)) * 1px) solid;
+    color: var(--newBrdrClr, var(--brdr));
+    outline: none;
+    margin: 0;
+    padding: 0;
+    transition: all calc(var(--dur) / 3) linear;
+  }
+  .checkboxWrapper30 .checkbox input:hover,
+  .checkboxWrapper30 .checkbox input:checked {
+    --newBrdr: calc(var(--size, 1) * 2);
+  }
+  .checkboxWrapper30 .checkbox input:hover {
+    --newBrdrClr: var(--brdr-hovr);
+  }
+  .checkboxWrapper30 .checkbox input:checked {
+    --newBrdrClr: var(--brdr-actv);
+    transition-delay: calc(var(--dur) /1.3);
+  }
+  .checkboxWrapper30 .checkbox input:checked + svg {
+    --dashArray: 16 93;
+    --dashOffset: 109;
+  }
+  .checkboxWrapper30 .checkbox svg {
+    fill: none;
+    left: 0;
+    pointer-events: none;
+    stroke: var(--stroke, var(--border-active));
+    stroke-dasharray: var(--dashArray, 93);
+    stroke-dashoffset: var(--dashOffset, 94);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2px;
+    top: 0;
+    transition: stroke-dasharray var(--dur), stroke-dashoffset var(--dur);
+  }
+  .checkboxWrapper30 .checkbox svg,
+  .checkboxWrapper30 .checkbox input {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }

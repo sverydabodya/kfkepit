@@ -1,0 +1,149 @@
+$maxWidth: 1920;
+$maxWidthContainer: 1000;
+
+@mixin adaptive-value($property, $startSize, $minSize, $type) {
+    $addSize: $startSize - $minSize;
+    @if $type== 1 {
+        #{$property}: $startSize + px;
+        @media (max-width: #{$maxWidthContainer + px}) {
+            #{$property}: calc(#{$minSize + px} + #{$addSize} * ((100vw - 320px) / #{$maxWidthContainer - 320}));
+        }
+    } @else if $type== 2 {
+        #{$property}: $startSize + px;
+        @media (min-width: #{$maxWidthContainer + px}) {
+            #{$property}: calc(#{$minSize + px} + #{$addSize} * ((100vw - 320px) / #{$maxWidth - 320}));
+        }
+    } @else {
+        #{$property}: calc(#{$minSize + px} + #{$addSize} * ((100vw - 320px) / #{$maxWidth - 320}));
+    }
+}
+
+
+
+
+.footer{
+    width: 100%;
+    background-color: #171717;
+    color: #fff;
+    margin-top: 100px;
+    &__container{
+        max-width: 1000px;
+        padding: 0 15px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: rgba(255, 255, 255, 0.10) 1px solid;
+        @media (max-width:50.0625em) {
+            justify-content: center;
+            border-bottom: none;
+        }
+    }
+    &__nav{
+        display: flex;
+        flex-direction: column;
+        row-gap: 25px;
+        @media (max-width:50.0625em) {
+            display: none;
+        }
+        span{
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 1rem;
+            font-weight: 700;
+
+        }
+    }
+    &__items{
+        display: flex;
+        column-gap: 20px;
+        @media (max-width:50.0625em) {
+            display: none;
+        }
+    }
+    &__link{
+        position: relative;
+        transition: 0.5s;
+        cursor: pointer;
+        list-style-type: none;
+        &::after{
+            position: absolute;
+            content: '';
+            width: 100%;
+            height: 1px;
+            top: 100%;
+            left: 0;
+            transition: transform 0.5s;
+            transform: scaleX(0);
+            transform-origin: right;
+            background-color: #ffffff;
+            z-index: 1;
+        }
+        &:hover{
+            color: #ffffff;
+        }
+        &:hover::after{
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+    }
+    &__logo{
+        @include adaptive-value(margin-top, 30, 20, 1);
+        @include adaptive-value(margin-bottom, 30, 15, 1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        column-gap: 3px;
+        row-gap: 10px;
+        @media (max-width:50.0625em) {
+            flex-direction: row;
+        }
+
+    }
+    &__img{
+        background-color: #fff;
+        border-radius: 10px;
+        @include adaptive-value(padding-top, 10, 3, 1);
+        @include adaptive-value(padding-bottom, 10, 3, 1);
+        @include adaptive-value(padding-left, 15, 8, 1);
+        @include adaptive-value(padding-right, 15, 8, 1);
+        @media (max-width:50.0625em) {
+            svg{
+                @include adaptive-value(width, 32, 18, 1);
+                @include adaptive-value(width, 40, 22, 1);
+            }
+        }
+    }
+    &__text{
+        text-align: center;
+        max-width: 92px;
+        @include adaptive-value(font-size, 20, 14, 1);
+        font-weight: 700;
+        
+    }
+    &__socials{
+        column-gap: 20px;
+        display: flex;
+        flex-direction: column;
+        row-gap: 25px;
+        span{
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: end;
+        }
+        @media (max-width:50.0625em) {
+            display: none;
+        }
+    }
+    &__copy{
+        @include adaptive-value(font-size, 14, 10, 1);
+        text-align: center;
+        @include adaptive-value(margin-top, 15, 5, 1);
+        @include adaptive-value(margin-bottom, 15, 10, 1);
+        @media (max-width:50.0625em) {
+            span{
+                display: none;
+            }
+        }
+    }
+}

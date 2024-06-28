@@ -2,10 +2,11 @@ import {FC} from 'react';
 import Header from './UI-HomePage/Header/Header';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import "../style.scss";
-import 'swiper/css';
-import 'swiper/css/pagination';
+import 'swiper/scss';
+import 'swiper/scss/pagination';
 import { Pagination } from 'swiper/modules';
 import sliderImage from '../assets/slider-image.jpg';
+
 
 
 
