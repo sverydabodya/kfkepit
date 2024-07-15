@@ -6,6 +6,8 @@ import HomePage from './components/HomePage.tsx';
 import AuthPage from './components/AuthPage.tsx';
 import NotFound from './components/NotFound.tsx';
 import NewsPage from './components/NewsPage.tsx';
+import SubjectPage from './components/SubjectPage.tsx';
+import SchedulePage from './components/SchedulePage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,14 @@ const router = createBrowserRouter([
   {
     path: '/news',
     element: <NewsPage/>
+  },
+  {
+    path: '/subject',
+    element: <SubjectPage/>
+  },
+  {
+    path: '/schedule',
+    element: <SchedulePage/>
   }
 ])
 

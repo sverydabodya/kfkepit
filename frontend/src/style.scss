@@ -42,7 +42,7 @@ body{
     @include adaptive-value(padding-right, 15, 7, 1);
 }
 
-.page{
+main{
     flex: 1 1 auto;
 }
 ._lock{

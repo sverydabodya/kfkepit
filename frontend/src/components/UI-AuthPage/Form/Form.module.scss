@@ -57,9 +57,6 @@ $maxWidthContainer: 1000;
         padding: 0.625rem 3.125rem;
         transition: all 0.3s ease 0s;
         margin-bottom: 10px;
-        &:hover{
-            transform: scale(1.07);
-        }
     }
     @media (max-width:50.0625em) {
       div{

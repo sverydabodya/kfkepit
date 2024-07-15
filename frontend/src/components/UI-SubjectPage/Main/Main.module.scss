@@ -1,0 +1,22 @@
+.main{
+    &__path{
+        display: flex;
+        padding: 20px 30px;
+        align-items: center;
+        column-gap: 10px;
+        background-color: #383838;
+        font-size: 1.0625rem;
+        
+    }
+    &__text{
+        span{
+            color: rgba(255, 255, 255, 0.70);
+        }
+    }
+    &__img{
+
+    }
+}
+.theme{
+    margin-left: auto;
+}

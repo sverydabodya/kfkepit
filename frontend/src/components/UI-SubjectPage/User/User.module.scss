@@ -1,0 +1,12 @@
+.user{
+    background: linear-gradient(90deg, #EEE2A7 0%, #EEE2A7 0%, #CECEB4 47%, #989884 100%);
+    display: flex;
+    padding: 20px;
+    align-items: center;
+    column-gap: 10px;
+    justify-content: flex-end;
+
+    &__name{
+        color: #000;
+    }
+}

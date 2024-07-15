@@ -1,5 +1,6 @@
 import { FC } from "react";
 import classes from './Form.module.scss';
+import { NavLink } from "react-router-dom";
 
 const Form: FC = () => {
     return (
@@ -24,7 +25,7 @@ const Form: FC = () => {
                 <p>Запам’ятати мене</p>
             </div>
             <div>
-                <button className={classes.form__button}>Увійти</button>
+                <NavLink to={'/subject'} className={classes.form__button}>Увійти</NavLink>
             </div>
 
         </form>

@@ -2,11 +2,13 @@ import { FC } from "react";
 import classes from "./Footer.module.scss"
 import { NavLink } from "react-router-dom";
 
+interface FooterProps {
+    className: string;
+}
 
 
 
-
-const Footer:FC = () => {
+const Footer:FC<FooterProps> = ({className}) => {
     return ( 
         <footer className={classes.footer}>
             <div className={classes.footer__container}>
