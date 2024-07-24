@@ -1,8 +1,8 @@
 import { FC } from "react";
-import classes from "./UI-SubjectPage/SubjectPage.module.scss";
 import Sidebar from "./UI-SubjectPage/Sidebar/Sidebar";
 import Main from "./UI-SubjectPage/Main/Main";
 import Footer from "./UI/Footer/Footer";
+import classes from "./UI-SubjectPage/SubjectPage.module.scss";
 import { useTheme } from "./ThemeProvider";
 
 

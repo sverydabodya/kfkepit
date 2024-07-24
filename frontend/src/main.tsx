@@ -9,6 +9,7 @@ import NewsPage from './components/NewsPage';
 import SubjectPage from './components/SubjectPage';
 import SchedulePage from './components/SchedulePage';
 import ThemeProvider from './components/ThemeProvider';
+import MaterialsPage from './components/MaterialsPage';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
   {
     path: '/schedule',
     element: <SchedulePage />
+  },
+  {
+    path: '/materials',
+    element: <MaterialsPage />
   }
 ]);
 

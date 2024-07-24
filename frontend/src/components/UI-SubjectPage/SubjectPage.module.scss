@@ -33,10 +33,10 @@ $maxWidthContainer: 1000;
     display: flex;
     flex: 1;
     border-bottom: #fff 1px solid;
+    
 }
 
 .sidebar {
-    width: 220px;
     
 }
 
@@ -50,12 +50,6 @@ $maxWidthContainer: 1000;
 
 }
 
-@media (max-width: 768px) {
-    .content {
-        flex-direction: column;
-    }
-    
-    .sidebar {
-        width: 100%;
-    }
+@media (max-width: 62em) {
+
 }

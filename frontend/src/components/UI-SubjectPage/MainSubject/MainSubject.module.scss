@@ -1,0 +1,11 @@
+.material{
+    display: flex;
+    align-items: center;
+    column-gap: 11px;
+    border-bottom: 1px solid #fff;
+    padding-bottom: 10px;
+    
+    &__text{
+        font-size: 1.0625rem;
+    }
+}
