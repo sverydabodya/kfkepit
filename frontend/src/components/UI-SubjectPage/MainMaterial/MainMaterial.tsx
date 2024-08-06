@@ -1,18 +1,91 @@
-import { FC } from "react";
+import { FC, useState } from "react";
+import Select , { MultiValue } from 'react-select';
 import classes from './MainMaterial.module.scss'
 import User from "../User/User";
 import { useTheme } from "../../ThemeProvider";
+import Modal from "../Modal/Modal";
+import customStyles from '../SelectStyles/SelectStyles';
+import makeAnimated from 'react-select/animated';
+import AddItemForm from "../AddItemForm/AddItemForm";
+import MainSubject from "../MainSubject/MainSubject";
 
 
 interface MainProps {
     className?: string;
 }
 
+interface GroupOption {
+    value: string;
+    label: string;
+}
+
+interface Item {
+    id: number;
+    name: string;
+    group: string;
+    files: File[];
+}
+
+  
+  const groupOptions: GroupOption[] = [
+    { value: 'КІ-11', label: 'КІ-11' },
+    { value: 'КІ-21', label: 'КІ-21' },
+    { value: 'КІ-31', label: 'КІ-31' },
+    { value: 'КІ-41', label: 'КІ-41' },
+    { value: 'М-11', label: 'М-11' },
+    { value: 'М-21', label: 'М-21' },
+    { value: 'М-31', label: 'М-31' },
+    { value: 'М-41', label: 'М-41' },
+    { value: 'ФБС-11', label: 'ФБС-11' },
+    { value: 'ФБС-21', label: 'ФБС-21' },
+    { value: 'ФБС-31', label: 'ФБС-31' },
+    { value: 'ФБС-41', label: 'ФБС-41' },
+    { value: 'КБ-11', label: 'КБ-11' },
+    { value: 'КБ-21', label: 'КБ-21' },
+    { value: 'КБ-31', label: 'КБ-31' },
+    { value: 'КБ-41', label: 'КБ-41' },
+    { value: 'ПР-11', label: 'ПР-11' },
+    { value: 'ПР-21', label: 'ПР-21' },
+    { value: 'ПР-31', label: 'ПР-31' },
+    { value: 'ПР-41', label: 'ПР-41' },
+  ];
+
 
 
 const MainMaterial:FC<MainProps> = ({ className }) => {
 
     const { toggleTheme } = useTheme();
+    const [modalActive, setModalActive] = useState(false);
+    const [selectedGroups, setSelectedGroups] = useState<MultiValue<GroupOption>>([]);
+    const [items, setItems] = useState<Item[]>([]);
+    const [detailModalActive, setDetailModalActive] = useState(false);
+    const [activeItem, setActiveItem] = useState<Item | null>(null);
+
+    const handleGroupChange = (selectedOptions: MultiValue<GroupOption>) => {
+        setSelectedGroups(selectedOptions);
+    };
+
+    const addItem = (name: string, groups: string[], files: File[]) => {
+        const newItems = groups.map(group => ({
+            id: items.length + 1,
+            name,
+            group,
+            files
+        }));
+        setItems([...items, ...newItems]);
+        setModalActive(false);
+    };
+
+    const showItemDetails = (item: Item) => {
+        setActiveItem(item);
+        setDetailModalActive(true);
+    };
+
+    const filteredItems = selectedGroups.length > 0 
+        ? items.filter(item => selectedGroups.some(group => group.value === item.group))
+        : items;
+
+    
 
     return ( 
         <main className={`${classes.main} ${className}`}>
@@ -45,9 +118,58 @@ const MainMaterial:FC<MainProps> = ({ className }) => {
                     </svg>
                 </div>
             </div>
-            
+            <div className={classes.main__content}>
+                <div className={classes.main__controls}>
+                    <button className={classes.main__modal} onClick={() => setModalActive(true)}>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 10C20 10.3183 19.8736 10.6235 19.6485 10.8485C19.4235 11.0736 19.1183 11.2 18.8 11.2H11.2V18.8C11.2 19.1183 11.0736 19.4235 10.8485 19.6485C10.6235 19.8736 10.3183 20 10 20C9.68174 20 9.37652 19.8736 9.15147 19.6485C8.92643 19.4235 8.8 19.1183 8.8 18.8V11.2H1.2C0.88174 11.2 0.576516 11.0736 0.351472 10.8485C0.126428 10.6235 0 10.3183 0 10C0 9.68174 0.126428 9.37652 0.351472 9.15147C0.576516 8.92643 0.88174 8.8 1.2 8.8H8.8V1.2C8.8 0.88174 8.92643 0.576516 9.15147 0.351472C9.37652 0.126428 9.68174 0 10 0C10.3183 0 10.6235 0.126428 10.8485 0.351472C11.0736 0.576516 11.2 0.88174 11.2 1.2V8.8H18.8C19.1183 8.8 19.4235 8.92643 19.6485 9.15147C19.8736 9.37652 20 9.68174 20 10Z" fill="url(#paint0_linear_126_123)"/>
+                            <defs>
+                            <linearGradient id="paint0_linear_126_123" x1="20" y1="3.43323e-06" x2="-2.78545" y2="3.95581" gradientUnits="userSpaceOnUse">
+                            <stop stopColor="#A8CBFF"/>
+                            <stop stopColor="#A8CBFF"/>
+                            <stop offset="0.0001" stopColor="#A8CBFF"/>
+                            <stop offset="1" stopColor="#EBAEC8"/>
+                            </linearGradient>
+                            </defs>
+                        </svg>
+                        <p>Додати матеріал </p>
+                    </button>
+                    <Select
+                        isMulti
+                        options={groupOptions}
+                        styles={customStyles}
+                        components={makeAnimated()}
+                        value={selectedGroups}
+                        onChange={handleGroupChange}
+                        placeholder="Виберіть групи для фільтрації"
+                    />
+                </div>
+                {filteredItems.map(item => (
+                    <div key={item.id} className={classes.main__item} onClick={() => showItemDetails(item)}>
+                        <MainSubject>{item.name} (Група: {item.group})</MainSubject>
+                    </div>
+                ))}
+                <Modal active={modalActive} setActive={setModalActive}>
+                    <AddItemForm onAddItem={addItem} />
+                </Modal>
+                {activeItem && (
+                    <Modal active={detailModalActive} setActive={setDetailModalActive}>
+                        <h3>{activeItem.name}</h3>
+                        <p>Група: {activeItem.group}</p>
+                        <ul>
+                            {activeItem.files.map((file, index) => (
+                                <li key={index}>
+                                    <a href={URL.createObjectURL(file)} download={file.name}>{file.name}</a>
+                                </li>
+                            ))}
+                        </ul>
+                    </Modal>
+                )}
+            </div>
         </main>
      );
-}
+};
+
+
 
 export default MainMaterial;
