@@ -33,8 +33,7 @@ model Material {
   files     String[] @default([])
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String
-  group     Group?   @relation(fields: [groupId], references: [id])
-  groupId   String?
+  groups    Group[]
   subject   Subject  @relation(fields: [subjectId], references: [id])
   subjectId String
   createdAt DateTime @default(now())

@@ -52,7 +52,10 @@ export const multerConfig: multer.Options = {
 			cb(null, path.join(__dirname, "..", "..", "/public/materials"));
 		},
 		filename: function (req, file, cb) {
-			cb(null, decodeURIComponent(file.originalname));
+			file.originalname = Buffer.from(file.originalname, "latin1").toString(
+				"utf8"
+			);
+			cb(null, file.originalname);
 		},
 	}),
 };

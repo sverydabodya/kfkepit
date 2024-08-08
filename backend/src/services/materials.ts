@@ -36,7 +36,7 @@ export const getMaterialsBySubject = async (
 		const materials = await prisma.material.findMany({
 			where: {
 				subject: { name: subjectName },
-				groupId,
+				groups: { some: { id: groupId } },
 			},
 			orderBy: {
 				createdAt: "desc",
@@ -53,7 +53,7 @@ export const getMaterialsBySubject = async (
 };
 
 export const getMaterialsByGroup = async (
-	group: string,
+	groups: string[],
 	subject: string,
 	userId: string,
 	page: string = null,
@@ -61,7 +61,7 @@ export const getMaterialsByGroup = async (
 ) => {
 	try {
 		let materials;
-		if (group === "all") {
+		if (groups[0] === "all") {
 			materials = await prisma.material.findMany({
 				where: {
 					authorId: userId,
@@ -78,7 +78,7 @@ export const getMaterialsByGroup = async (
 				where: {
 					authorId: userId,
 					subject: { name: subject },
-					group: { name: group },
+					groups: { some: { name: { in: groups } } },
 				},
 				orderBy: {
 					createdAt: "desc",
@@ -98,30 +98,43 @@ export const getMaterialsByGroup = async (
 export const newMaterial = async (
 	materialName: string,
 	authorId: string,
-	groupName: string,
+	groups: string[],
 	subjectName: string,
 	filesPaths: string[]
 ) => {
 	try {
-		//maybe will be better without transaction
+		const subjectId = await prisma.subject.findFirst({
+			where: { name: subjectName },
+			select: { id: true },
+		});
 
-		const [groupId, subjectId] = await prisma.$transaction([
-			prisma.group.findFirst({
-				where: { name: groupName },
-				select: { id: true },
-			}),
-			prisma.subject.findFirst({
-				where: { name: subjectName },
-				select: { id: true },
-			}),
-		]);
+		if (!subjectId) {
+			throw new Error(`Subject with name "${subjectName}" not found.`);
+		}
+
+		const groupConnections = await prisma.group.findMany({
+			where: {
+				name: {
+					in: groups,
+				},
+			},
+			select: {
+				id: true,
+			},
+		});
+
+		if (groupConnections.length !== groups.length) {
+			throw new Error(`One or more groups were not found.`);
+		}
 
 		const material = await prisma.material.create({
 			data: {
 				name: materialName,
 				files: filesPaths,
 				authorId: authorId,
-				groupId: groupId.id,
+				groups: {
+					connect: groupConnections.map((group) => ({ id: group.id })),
+				},
 				subjectId: subjectId.id,
 			},
 		});

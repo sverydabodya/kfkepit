@@ -78,12 +78,12 @@ export const getMaterialsByGroup: RequestHandler<
 > = async (req, res, next) => {
 	const subject = req.query.subject;
 	const page = req.query.page;
-	const group = req.params.group;
+	const groups = req.params.groups.split(",");
 	const user = req.session.user;
 
 	try {
 		const materials = await MaterialsService.getMaterialsByGroup(
-			group,
+			groups,
 			subject,
 			user.id,
 			page
@@ -105,7 +105,7 @@ export const newMaterial: RequestHandler<
 	Prisma.MaterialCreateInput
 > = async (req: Request & MulterRequest, res: Response, next: NextFunction) => {
 	const materialName = req.body.materialName;
-	const group = req.body.group;
+	const groups = req.body.groups.split(",");
 	const subject = req.body.subject;
 	const user = req.session.user;
 
@@ -129,7 +129,7 @@ export const newMaterial: RequestHandler<
 		const material = await MaterialsService.newMaterial(
 			materialName,
 			user.id,
-			group,
+			groups,
 			subject,
 			filesPaths
 		);

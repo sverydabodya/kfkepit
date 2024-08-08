@@ -18,9 +18,9 @@ router.get(
 	MaterialsController.getMaterialsBySubject
 );
 router.get(
-	"/group/:group",
+	"/group/:groups",
 	validateRequest({
-		params: z.object({ group: z.string() }),
+		params: z.object({ groups: z.string() }),
 		query: z.object({ subject: z.string(), page: z.string().optional() }),
 	}),
 	MaterialsController.getMaterialsByGroup
@@ -39,7 +39,7 @@ router.post(
 	validateRequest({
 		body: z.object({
 			materialName: z.string(),
-			group: z.string(),
+			groups: z.string(),
 			subject: z.string(),
 		}),
 	}),
