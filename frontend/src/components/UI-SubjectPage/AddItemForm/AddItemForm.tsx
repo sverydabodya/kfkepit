@@ -83,11 +83,15 @@ const AddItemForm: FC<AddItemFormProps> = ({ onAddItem }) => {
                 />
             </div>
             <div className={classes.form__files}>
-                <input
-                    type="file"
-                    multiple
-                    onChange={handleFileChange}
-                />
+                <div className={classes.form__add_wrapper}>
+                    <input
+                        className={classes.form__add}
+                        type="file"
+                        multiple
+                        onChange={handleFileChange}
+                    />
+                    <button type="button" className={classes.form__add_button}>Додати ще</button>
+                </div>
                 <ul className={classes.form__items}>
                     {files.map((file, index) => (
                         <li className={classes.form__item} key={index}>
