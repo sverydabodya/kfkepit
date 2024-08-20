@@ -61,6 +61,25 @@ $maxWidthContainer: 1920;
     }
     
 }
+.file{
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    &__title{
+        white-space: normal;
+        text-align: justify;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+    &__label{
+
+    }
+    &__item{
+        position: relative;
+        
+    }
+}
+
 
 
 
