@@ -10,6 +10,7 @@ import SubjectPage from './components/SubjectPage';
 import SchedulePage from './components/SchedulePage';
 import ThemeProvider from './components/ThemeProvider';
 import MaterialsPage from './components/MaterialsPage';
+import PostDetail from './components/PostDetail';
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: '/materials',
     element: <MaterialsPage />
+  },
+  {
+    path: '/post/:id',
+    element: <PostDetail/>
   }
 ]);
 

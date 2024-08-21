@@ -3,6 +3,7 @@ import classes from './UI-HomePage/NewsPage.module.scss'
 import Header from "./UI-HomePage/Header/Header";
 import Footer from "./UI/Footer/Footer";
 import Modal from "./UI-SubjectPage/Modal/Modal";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -19,6 +20,8 @@ const NewsPage:FC = () => {
     const [isModalActive, setIsModalActive] = useState(false);
     const [posts, setPosts] = useState<Post[]>([]);
     const [newPost, setNewPost] = useState({ title: '', text: '', date: '', img: '' });
+
+    const navigate = useNavigate();
 
     const TITLE_LIMIT = 100;
     const TEXT_LIMIT = 500;
@@ -57,6 +60,12 @@ const NewsPage:FC = () => {
         setPosts(posts.filter(post => post.id !== postId));
     }
 
+    const handlePostClick = (postId: number) => {
+        const post = posts.find(p => p.id === postId);
+        if (post) {
+            navigate(`/post/${postId}`, { state: { post } });
+        }
+    }
 
 
 
@@ -69,7 +78,11 @@ const NewsPage:FC = () => {
                     <button className={classes.main__button} onClick={handleCreatePostClick}>Створити пост</button>
                     <div className={classes.main__posts}>
                         {posts.map(post => (
-                            <div key={post.id} className={classes.main__post}>
+                            <div 
+                                key={post.id} 
+                                className={classes.main__post}
+                                onClick={() => handlePostClick(post.id)}
+                            >
                                 <div className={classes.post__img}>
                                     {post.img && <img src={post.img as string} alt="Post image" />}
                                 </div>
