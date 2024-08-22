@@ -50,6 +50,7 @@ export const multerConfig: multer.Options = {
 	storage: multer.diskStorage({
 		destination: function (req, file, cb) {
 			cb(null, path.join(__dirname, "..", "..", "/public/materials"));
+			// cb(null, path.resolve(__dirname, "../../../public/materials"));
 		},
 		filename: function (req, file, cb) {
 			file.originalname = Buffer.from(file.originalname, "latin1").toString(
@@ -59,8 +60,3 @@ export const multerConfig: multer.Options = {
 		},
 	}),
 };
-
-export const baseURL =
-	process.env.PRODUCTION == "true"
-		? "https://kkepit.onrender.com"
-		: "http://localhost:5000";
