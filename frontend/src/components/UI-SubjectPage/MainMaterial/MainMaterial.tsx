@@ -154,15 +154,17 @@ const MainMaterial:FC<MainProps> = ({ className }) => {
                 </Modal>
                 {activeItem && (
                     <Modal active={detailModalActive} setActive={setDetailModalActive}>
-                        <h3>{activeItem.name}</h3>
-                        <p>Група: {activeItem.group}</p>
-                        <ul>
-                            {activeItem.files.map((file, index) => (
-                                <li key={index}>
-                                    <a href={URL.createObjectURL(file)} download={file.name}>{file.name}</a>
-                                </li>
-                            ))}
-                        </ul>
+                        <div className={classes.file}>
+                            <h3 className={classes.file__title}>{activeItem.name}</h3>
+                            <p className={classes.file__label}>Група: {activeItem.group}</p>
+                            <ul>
+                                {activeItem.files.map((file, index) => (
+                                    <li className={classes.file__item} key={index}>
+                                        <a href={URL.createObjectURL(file)} download={file.name}>{file.name}</a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </Modal>
                 )}
             </div>
