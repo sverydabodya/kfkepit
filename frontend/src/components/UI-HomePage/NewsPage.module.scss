@@ -43,7 +43,7 @@
         display: flex;
         max-width: 600px;
         height: 125px;
-
+        overflow: hidden;
 
         @media (max-width:506px) {
             flex-direction: column;
@@ -137,6 +137,7 @@
     }
     &__text{
         font-weight: 400;
+
     }
     &__input{
         background-color: transparent;
@@ -145,11 +146,12 @@
         padding-bottom: 3px;
     }
     &__button{
-        margin-top: 10px;
+        margin-bottom: 10px;
         padding: 7px 15px;
         border-radius: 7px;
         background-color: transparent;
         border: 1px #fFF solid;
         color: #fFF;
+
     }
 }

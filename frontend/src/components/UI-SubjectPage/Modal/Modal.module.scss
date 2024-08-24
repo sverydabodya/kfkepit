@@ -19,6 +19,9 @@
         border-radius: 3px;
         margin: 0 10px;
         border: 0.5px #fff solid;
+        max-height: 80vh;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 }
 .modal.active{

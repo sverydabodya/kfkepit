@@ -5,6 +5,7 @@ import Header from "./UI-HomePage/Header/Header";
 import Footer from "./UI/Footer/Footer";
 
 interface Post {
+    content: string | TrustedHTML;
     id: number;
     title: string;
     text: string;
@@ -52,10 +53,10 @@ const PostDetail: FC = () => {
                     <div className={classes.post__img}>
                         {post.img && <img src={post.img as string} alt="Post image" />}
                     </div>
-                    <p className={classes.post__text}>{post.text}</p>
+                    <div className={classes.post__text} dangerouslySetInnerHTML={{ __html: post.content }} />
                 </div>
             </main>
-            <Footer className='footer' />
+            <Footer className='footer'/>
         </div>
     );
 }
