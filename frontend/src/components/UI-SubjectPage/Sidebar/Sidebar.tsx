@@ -7,7 +7,7 @@ interface SidebarProps {
 }
 
 
-const Sidebar:FC<SidebarProps> = ({ className }) => {
+const Sidebar:FC<SidebarProps> = () => {
     return ( 
         <aside className={classes.aside}>
             <div className={classes.aside__logo}>

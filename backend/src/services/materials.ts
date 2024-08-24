@@ -156,3 +156,5 @@ export const deleteMaterial = async (materialId: string) => {
 		throw new Error(`Failed to delete material: ${error.message}`);
 	}
 };
+
+

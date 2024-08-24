@@ -10,4 +10,6 @@ COPY ./backend .
 
 RUN npx prisma generate
 
+EXPOSE 4000
+
 CMD ["npm", "start"]

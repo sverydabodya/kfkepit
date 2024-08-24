@@ -11,7 +11,7 @@ const AuthPage:FC = () => {
         <div className={classes.wrapper}>
             <Header/>
             <Form/>
-            <Footer/>
+            <Footer className=""/>
         </div>
 
      );

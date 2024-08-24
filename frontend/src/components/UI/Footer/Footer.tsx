@@ -8,7 +8,7 @@ interface FooterProps {
 
 
 
-const Footer:FC<FooterProps> = ({className}) => {
+const Footer:FC<FooterProps> = () => {
     return ( 
         <footer className={classes.footer}>
             <div className={classes.footer__container}>
