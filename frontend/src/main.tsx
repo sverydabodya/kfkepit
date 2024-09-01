@@ -11,6 +11,8 @@ import SchedulePage from './components/SchedulePage';
 import ThemeProvider from './components/ThemeProvider';
 import MaterialsPage from './components/MaterialsPage';
 import PostDetail from './components/PostDetail';
+import AuthProvider from './components/AuthProvider';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
@@ -27,27 +29,44 @@ const router = createBrowserRouter([
     element: <NewsPage />
   },
   {
+    path: '/post/:id',
+    element: <PostDetail/>
+  },
+  {
     path: '/subject',
-    element: <SubjectPage />
+    element:
+    (
+      <ProtectedRoute>
+        <SubjectPage />
+      </ProtectedRoute>
+    ) 
   },
   {
     path: '/schedule',
-    element: <SchedulePage />
+    element: 
+    (
+      <ProtectedRoute>
+        <SchedulePage />
+      </ProtectedRoute>
+    )
   },
   {
     path: '/materials',
-    element: <MaterialsPage />
-  },
-  {
-    path: '/post/:id',
-    element: <PostDetail/>
+    element: 
+    (
+      <ProtectedRoute>
+        <MaterialsPage />
+      </ProtectedRoute>
+    )
   }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </ThemeProvider>
   </React.StrictMode>
 );

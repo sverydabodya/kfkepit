@@ -1,13 +1,13 @@
 import { FC, useState } from "react";
 import Select , { MultiValue } from 'react-select';
 import classes from './MainMaterial.module.scss'
-import User from "../User/User";
 import { useTheme } from "../../ThemeProvider";
 import Modal from "../Modal/Modal";
 import customStyles from '../SelectStyles/SelectStyles';
 import makeAnimated from 'react-select/animated';
 import AddItemForm from "../AddItemForm/AddItemForm";
 import MainSubject from "../MainSubject/MainSubject";
+import UserName from "../User/UserName";
 
 
 interface MainProps {
@@ -89,7 +89,7 @@ const MainMaterial:FC<MainProps> = ({ className }) => {
 
     return ( 
         <main className={`${classes.main} ${className}`}>
-            <User/>
+            <UserName/>
             <div className={classes.main__path}>
                 <div className={classes.main__img}>
                     <svg className="white" width="20" height="20" viewBox="0 0 20 20"  xmlns="http://www.w3.org/2000/svg">

@@ -20,7 +20,7 @@ export const sesssionConfig: expressSession.SessionOptions = {
 		maxAge: 60 * 60 * 1000,
 		httpOnly: true,
 		// secure: true,
-	},
+	  },
 	rolling: true,
 	store: sessionStore,
 };

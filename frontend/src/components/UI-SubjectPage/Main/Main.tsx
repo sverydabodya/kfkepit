@@ -1,22 +1,24 @@
-import { FC } from "react";
+
 import classes from './Main.module.scss'
-import User from "../User/User";
 import { useTheme } from "../../ThemeProvider";
 import MainSubject from "../MainSubject/MainSubject";
-
+import UserName from "../User/UserName";
+import { User } from "../../../model/user";
 
 interface MainProps {
-    className?: string;
+    className?: string,
+    loggedInUser: User | null
+
 }
 
-const Main:FC<MainProps> = ({ className }) => {
 
+const Main = ({ className }: MainProps) => {
     const { toggleTheme } = useTheme();
-  
+
 
     return ( 
         <main className={`${classes.main} ${className}`}>
-            <User/>
+            <UserName />
             <div className={classes.main__path}>
                 <div className={classes.main__img}>
                     <svg className="white" width="20" height="20" viewBox="0 0 20 20"  xmlns="http://www.w3.org/2000/svg">

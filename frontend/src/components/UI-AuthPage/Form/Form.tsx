@@ -1,17 +1,53 @@
-import { FC } from "react";
+import { useState } from "react";
 import classes from './Form.module.scss';
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import * as AuthApi from "../../../network/auth_api";
+import { User } from "../../../model/user";
+import { UnauthorizedError } from "../../../errors/http_errors";
+import { useForm } from "react-hook-form";
 
-const Form: FC = () => {
+interface LoginProps {
+    onLoginSuccessful: (user: User) => void
+}
+
+const Form = ({ onLoginSuccessful }: LoginProps) => {
+
+    const navigate = useNavigate();
+    const [, setErrorText] = useState<string | null>(null);
+
+    const { register, handleSubmit, formState: { isSubmitting } } = useForm<AuthApi.LoginCredentials>();
+
+    async function onSubmit(credentials: AuthApi.LoginCredentials) {
+        try {
+            console.log(credentials)
+            const user = await AuthApi.login(credentials);
+            onLoginSuccessful(user);
+            navigate('/subject');
+            
+        } catch (error) {
+            if (error instanceof UnauthorizedError) {
+                setErrorText(error.message);
+            } else {
+                alert(error);
+            }
+            console.error(error);
+        }
+    }
+    
+
+
+
     return (
-        <form className={classes.form}>
+        
+        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+            
             <h1 className={classes.form__title}>Авторизація</h1>
-            <input placeholder="Логін" type="text" className={classes.form__input} />
-            <input placeholder="Пароль" type="password" className={classes.form__input} />
+            <input {...register("username", { required: true })}  required placeholder="Логін" type="text" name="username" className={classes.form__input} />
+            <input {...register("password", { required: true })}  required placeholder="Пароль" type="password" name="password" className={classes.form__input} />
             <div className={classes.form__remember}>
                 <div className={classes.checkboxWrapper30}>
                     <span className={classes.checkbox}>
-                        <input type="checkbox" />
+                        <input {...register("rememberMe", { required: false })}  type="checkbox" name="rememberMe" />
                         <svg viewBox="0 0 22 22">
                             <use href="#checkbox-30" />
                         </svg>
@@ -25,7 +61,7 @@ const Form: FC = () => {
                 <p>Запам’ятати мене</p>
             </div>
             <div>
-                <NavLink to={'/subject'} className={classes.form__button}>Увійти</NavLink>
+                <button disabled={isSubmitting} className={classes.form__button}>Увійти</button>
             </div>
 
         </form>
@@ -33,3 +69,5 @@ const Form: FC = () => {
 }
 
 export default Form;
+
+

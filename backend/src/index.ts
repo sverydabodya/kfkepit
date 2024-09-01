@@ -13,7 +13,10 @@ const port = process.env.PORT || 5000;
 
 app.use(expressSession(sesssionConfig));
 
-app.use(cors());
+app.use(cors({
+	origin: 'http://localhost:5173',
+	credentials: true,
+}));
 //helmet needs configuration and maybe useless
 app.use(helmet());
 //todo add rate limiter, cache

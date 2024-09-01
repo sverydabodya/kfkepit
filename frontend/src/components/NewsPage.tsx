@@ -57,6 +57,7 @@ const NewsPage: FC = () => {
     setPosts([...posts, newPostData]);
     setIsModalActive(false);
     setNewPost({ title: '', content: '', date: '', img: '' });
+    console.log(newPost)
   }
 
   const handleDeletePost = (postId: number) => {

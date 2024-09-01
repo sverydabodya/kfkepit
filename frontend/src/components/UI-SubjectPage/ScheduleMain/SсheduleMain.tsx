@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import classes from './SсheduleMain.module.scss'
-import User from "../User/User";
+import User from "../User/UserName";
 import { useTheme } from "../../ThemeProvider";
 import Modal from "../Modal/Modal";
 

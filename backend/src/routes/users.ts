@@ -17,7 +17,7 @@ router.post(
 		body: z.object({
 			username: z.string().min(1).max(50),
 			password: z.string().min(1).max(50),
-			rememberMe: z.string().optional(),
+			rememberMe: z.boolean().optional(),
 		}),
 	}),
 	usersController.login
