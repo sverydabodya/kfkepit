@@ -42,7 +42,6 @@ export async function login(credentials: LoginCredentials): Promise<User> {
         });
         const user = await response.json();
 
-        // Збереження даних користувача, якщо вибрано "remember me"
         if (credentials.rememberMe) {
             localStorage.setItem("loggedInUser", JSON.stringify(user));
         }

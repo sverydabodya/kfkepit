@@ -7,18 +7,18 @@ import { User } from "../../../model/user";
 
 interface MainProps {
     className?: string,
-    loggedInUser: User | null
+    loggedInUser: User
 
 }
 
 
-const Main = ({ className }: MainProps) => {
+const Main = ({ className, loggedInUser  }: MainProps) => {
     const { toggleTheme } = useTheme();
 
 
     return ( 
         <main className={`${classes.main} ${className}`}>
-            <UserName />
+            <UserName user={loggedInUser} />
             <div className={classes.main__path}>
                 <div className={classes.main__img}>
                     <svg className="white" width="20" height="20" viewBox="0 0 20 20"  xmlns="http://www.w3.org/2000/svg">

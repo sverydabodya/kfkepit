@@ -1,15 +1,17 @@
 import { FC, useState } from "react";
 import classes from './SсheduleMain.module.scss'
-import User from "../User/UserName";
 import { useTheme } from "../../ThemeProvider";
 import Modal from "../Modal/Modal";
+import UserName from "../User/UserName";
+import { User } from "../../../model/user";
 
 interface MainProp {
     className?: string;
+    loggedInUser: User
 }
 
 
-const SсheduleMain:FC<MainProp> = ({ className }) => {
+const SсheduleMain:FC<MainProp> = ({ className,  loggedInUser}) => {
 
     const { toggleTheme } = useTheme();
     const [modalActive, setModalActive] = useState(false);
@@ -27,7 +29,7 @@ const SсheduleMain:FC<MainProp> = ({ className }) => {
 
     return (
         <main className={`${classes.main} ${className}`}>
-            <User/>
+            <UserName user={loggedInUser}/>
             <div className={classes.main__path}>
                     <div className={classes.main__img}>
                         <svg className="white" width="20" height="20" viewBox="0 0 20 20"  xmlns="http://www.w3.org/2000/svg">

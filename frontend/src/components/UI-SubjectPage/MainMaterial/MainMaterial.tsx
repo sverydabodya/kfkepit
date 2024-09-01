@@ -8,10 +8,12 @@ import makeAnimated from 'react-select/animated';
 import AddItemForm from "../AddItemForm/AddItemForm";
 import MainSubject from "../MainSubject/MainSubject";
 import UserName from "../User/UserName";
+import { User } from "../../../model/user";
 
 
 interface MainProps {
     className?: string;
+    loggedInUser: User
 }
 
 interface GroupOption {
@@ -52,7 +54,7 @@ interface Item {
 
 
 
-const MainMaterial:FC<MainProps> = ({ className }) => {
+const MainMaterial:FC<MainProps> = ({ className, loggedInUser }) => {
 
     const { toggleTheme } = useTheme();
     const [modalActive, setModalActive] = useState(false);
@@ -89,7 +91,7 @@ const MainMaterial:FC<MainProps> = ({ className }) => {
 
     return ( 
         <main className={`${classes.main} ${className}`}>
-            <UserName/>
+            <UserName user={loggedInUser}/>
             <div className={classes.main__path}>
                 <div className={classes.main__img}>
                     <svg className="white" width="20" height="20" viewBox="0 0 20 20"  xmlns="http://www.w3.org/2000/svg">
