@@ -86,3 +86,57 @@ html.dark .black{
     display: none;
 }
 
+html.light ._main_1u9y0_16{
+    background-color: #fff;
+}
+html.light ._aside__img_nhcmy_46{
+    background-color: #000;
+}
+html.light ._aside_nhcmy_1{
+    background-color: #fff;
+    color: #000;
+    border-right: #000 1px solid;
+}
+html.light ._aside__relog_nhcmy_94{
+    color: #000;
+}
+html.light ._material_jcd92_1{
+    color: #000;
+    border-bottom: #000 1px solid;
+}
+html.light ._main__path_3s0o6_1{
+    background-color: #F5F8FE;
+    color: #000;
+    span{
+        color: #00000095;
+    }
+}
+html.light ._user_i9wg6_1{
+    background: linear-gradient(260deg, #A8CBFF 0%, #A8CBFF 0%, #A8CBFF 0%, #EBAEC8 100%);
+}
+html.light ._main__path_ic6im_1{
+    background-color: #F5F8FE;
+    color: #000;
+    span{
+        color: #00000095;
+    }
+}
+html.light ._main__path_1c73a_1{
+    background-color: #F5F8FE;
+    color: #000;
+    span{
+        color: #00000095;
+    }
+}
+html.light ._main__modal_ic6im_18{
+    background-image: linear-gradient(260deg, #84b4fb 0%, #84b4fb 0%, #84b4fb 0%, #e492b6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+html.light ._main__button_1c73a_19{
+    color: #000;
+    border: 1px #000 solid;
+    &:hover{
+        background-color: #e1e1e1;
+    }
+}
