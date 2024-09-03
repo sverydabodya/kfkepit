@@ -12,6 +12,6 @@ export default function ProtectedRoute({ children }: PropsWithChildren) {
     }
   }, [navigate, user]);
 
-  // Повертаємо дітей тільки тоді, коли користувач аутентифікований
+
   return user ? children : null;
 }

@@ -32,7 +32,9 @@ export default function AuthProvider({ children }: PropsWithChildren) {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>
+      loading...
+    </div>;
   }
 
   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;

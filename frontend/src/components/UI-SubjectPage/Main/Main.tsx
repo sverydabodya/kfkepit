@@ -4,6 +4,7 @@ import { useTheme } from "../../ThemeProvider";
 import MainSubject from "../MainSubject/MainSubject";
 import UserName from "../User/UserName";
 import { User } from "../../../model/user";
+import { motion } from 'framer-motion';
 
 interface MainProps {
     className?: string,
@@ -47,9 +48,13 @@ const Main = ({ className, loggedInUser  }: MainProps) => {
                     </svg>
                 </div>
             </div>
-            <div className={classes.main__subject}>
+            <motion.div className={classes.main__subject}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}>
                 <MainSubject>math</MainSubject>
-            </div>
+                <MainSubject>mova</MainSubject>
+            </motion.div>
         </main>
      );
 }

@@ -103,6 +103,9 @@ $maxWidthContainer: 1000;
 		border-radius: 15px;
 		filter: blur(0px);
 		transition: filter 0.3s ease;
+		img{
+			border-radius: 15px;
+		}
 	}
 
 	&__name {

@@ -5,6 +5,7 @@ import * as AuthApi from "../../../network/auth_api";
 import { User } from "../../../model/user";
 import { UnauthorizedError } from "../../../errors/http_errors";
 import { useForm } from "react-hook-form";
+import { motion } from 'framer-motion';
 
 interface LoginProps {
     onLoginSuccessful: (user: User) => void
@@ -41,10 +42,22 @@ const Form = ({ onLoginSuccessful }: LoginProps) => {
         
         <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
             
-            <h1 className={classes.form__title}>Авторизація</h1>
-            <input {...register("username", { required: true })}  required placeholder="Логін" type="text" name="username" className={classes.form__input} />
-            <input {...register("password", { required: true })}  required placeholder="Пароль" type="password" name="password" className={classes.form__input} />
-            <div className={classes.form__remember}>
+            <motion.h1 className={classes.form__title}
+            initial={{ opacity: 0, y: -100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}>Авторизація</motion.h1>
+            <motion.input {...register("username", { required: true })}  required placeholder="Логін" type="text" name="username" className={classes.form__input} 
+            initial={{ opacity: 0, y: -125 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}/>
+            <motion.input {...register("password", { required: true })}  required placeholder="Пароль" type="password" name="password" className={classes.form__input}
+            initial={{ opacity: 0, y: -150 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}/>
+            <motion.div className={classes.form__remember}
+            initial={{ opacity: 0, y: -175 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}>
                 <div className={classes.checkboxWrapper30}>
                     <span className={classes.checkbox}>
                         <input {...register("rememberMe", { required: false })}  type="checkbox" name="rememberMe" />
@@ -59,10 +72,13 @@ const Form = ({ onLoginSuccessful }: LoginProps) => {
                     </svg>
                 </div>
                 <p>Запам’ятати мене</p>
-            </div>
-            <div>
+            </motion.div>
+            <motion.div
+            initial={{ opacity: 0, y: -200 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}>
                 <button disabled={isSubmitting} className={classes.form__button}>Увійти</button>
-            </div>
+            </motion.div>
 
         </form>
     );

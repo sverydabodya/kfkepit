@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import classes from './Header.module.scss';
 import { NavLink } from 'react-router-dom';
-
+import { motion } from 'framer-motion';
 
 
 const Header:FC = () => {
@@ -34,7 +34,10 @@ const Header:FC = () => {
 
 
     return ( 
-        <header className={`${classes.header} ${isScrolled ? classes.scroll : ''}`}>
+        <motion.header className={`${classes.header} ${isScrolled ? classes.scroll : ''}`}
+                initial={{ opacity: 0, y: -100 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.8 }}>
             <div className={classes.header__container}>
                 <NavLink to={"/"} className={classes.header__logo}>
                     <div className={classes.header__img}>
@@ -88,7 +91,7 @@ const Header:FC = () => {
                     <div className={classes.header__copy}><span>ⓒ</span> STK 2023</div>
                 </nav>
             </div>
-        </header>
+        </motion.header>
      );
 }
 

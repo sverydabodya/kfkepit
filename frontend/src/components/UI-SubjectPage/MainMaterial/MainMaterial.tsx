@@ -9,6 +9,7 @@ import AddItemForm from "../AddItemForm/AddItemForm";
 import MainSubject from "../MainSubject/MainSubject";
 import UserName from "../User/UserName";
 import { User } from "../../../model/user";
+import { motion } from "framer-motion";
 
 
 interface MainProps {
@@ -147,9 +148,12 @@ const MainMaterial:FC<MainProps> = ({ className, loggedInUser }) => {
                     />
                 </div>
                 {filteredItems.map(item => (
-                    <div key={item.id} className={classes.main__item} onClick={() => showItemDetails(item)}>
+                    <motion.div key={item.id} className={classes.main__item} onClick={() => showItemDetails(item)}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4 }}>
                         <MainSubject>{item.name} (Група: {item.group})</MainSubject>
-                    </div>
+                    </motion.div>
                 ))}
                 <Modal active={modalActive} setActive={setModalActive}>
                     <AddItemForm onAddItem={addItem} />
