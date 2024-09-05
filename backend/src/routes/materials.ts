@@ -3,11 +3,11 @@ import multer from "multer";
 import { z } from "zod";
 import * as MaterialsController from "../controllers/materials";
 import { isTeacher } from "../middlewares/isTeacher";
-import { multerConfig } from "../config/config";
+import { materialsMulterConfig } from "../config/config";
 import { validateRequest } from "../middlewares/validateRequest";
 
 const router = express.Router();
-const upload = multer(multerConfig);
+const upload = multer(materialsMulterConfig);
 
 router.get(
 	"/subject/:subject",

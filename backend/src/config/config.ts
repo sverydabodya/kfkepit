@@ -20,12 +20,12 @@ export const sesssionConfig: expressSession.SessionOptions = {
 		maxAge: 60 * 60 * 1000,
 		httpOnly: true,
 		// secure: true,
-	  },
+	},
 	rolling: true,
 	store: sessionStore,
 };
 
-export const multerConfig: multer.Options = {
+export const materialsMulterConfig: multer.Options = {
 	limits: {
 		fileSize: 25 * 1024 * 1024, // 25MB limit
 	},
@@ -51,6 +51,21 @@ export const multerConfig: multer.Options = {
 		destination: function (req, file, cb) {
 			cb(null, path.join(__dirname, "..", "..", "/public/materials"));
 			// cb(null, path.resolve(__dirname, "../../../public/materials"));
+		},
+		filename: function (req, file, cb) {
+			file.originalname = Buffer.from(file.originalname, "latin1").toString(
+				"utf8"
+			);
+			cb(null, file.originalname);
+		},
+	}),
+};
+
+export const postsMulterConfig: multer.Options = {
+	storage: multer.diskStorage({
+		destination: function (req, file, cb) {
+			// cb(null, path.join(__dirname, "..", "..", "/public/images"));
+			cb(null, path.resolve(__dirname, "../../../public/images"));
 		},
 		filename: function (req, file, cb) {
 			file.originalname = Buffer.from(file.originalname, "latin1").toString(
