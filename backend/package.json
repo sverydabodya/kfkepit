@@ -5,7 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "npx tsc && node dist/index.js",
-		"dev": "npx nodemon src/index.ts"
+		"dev": "npx nodemon src/index.ts",
+		"postinstall": "prisma generate"
 	},
 	"author": "",
 	"license": "ISC",
@@ -23,7 +24,7 @@
 		"typescript": "^5.4.5"
 	},
 	"dependencies": {
-		"@prisma/client": "^5.18.0",
+		"@prisma/client": "^5.19.1",
 		"@quixo3/prisma-session-store": "^3.1.13",
 		"cors": "^2.8.5",
 		"dotenv": "^16.4.5",
