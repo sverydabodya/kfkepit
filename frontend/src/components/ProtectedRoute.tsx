@@ -7,11 +7,12 @@ export default function ProtectedRoute({ children }: PropsWithChildren) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user === null) {
+
+    const storedUser = localStorage.getItem("loggedInUser");
+    if (!storedUser && user === null) {
       navigate('/auth', { replace: true });
     }
   }, [navigate, user]);
-
 
   return user ? children : null;
 }

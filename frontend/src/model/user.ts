@@ -1,4 +1,8 @@
 export interface User {
-    username: string,
-    password: string
+    id: string;
+    username: string;
+    role: string;
+    groupId?: string;
+    groupName?: string;
+    courseId?: string;
 }

@@ -79,6 +79,37 @@ $maxWidthContainer: 1920;
         
     }
 }
+.material {
+    &__item{
+        display: flex;
+        column-gap: 10px;
+        align-items: center;
+        margin-bottom: 7px;
+        padding-bottom: 10px;
+        border-bottom: 1px #fff solid;
+    }
+    &__content{
+        font-size: 1.0625rem;
+        text-overflow: ellipsis;
+
+        // display: flex;
+
+        // overflow: hidden;
+        // margin-top: 4px;
+        white-space: normal;
+        display: flex;
+        column-gap: 15px;
+    }
+    &__title{
+        
+    }
+    &__group{
+        
+    }
+    &__date{
+        margin-left: auto;
+    }
+}
 
 
 

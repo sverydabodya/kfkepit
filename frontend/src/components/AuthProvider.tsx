@@ -4,13 +4,8 @@ import { getLoggedInUser } from '../network/auth_api';
 
 const AuthContext = createContext<User | null>(null);
 
-type AuthProviderProps = PropsWithChildren & {
-  initialSignedIn?: boolean;
-};
-
 export default function AuthProvider({ children }: PropsWithChildren) {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -20,25 +15,21 @@ export default function AuthProvider({ children }: PropsWithChildren) {
           setUser(JSON.parse(storedUser));
         } else {
           const loggedInUser = await getLoggedInUser();
+          if (loggedInUser) {
+            localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+          }
           setUser(loggedInUser);
         }
       } catch {
         setUser(null);
-      } finally {
-        setIsLoading(false);
       }
     };
     fetchUser();
   }, []);
 
-  if (isLoading) {
-    return <div>
-      loading...
-    </div>;
-  }
-
   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 }
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {

@@ -89,6 +89,9 @@ export const getMaterialsByGroup = async (
 				orderBy: {
 					createdAt: "desc",
 				},
+				include: {
+                    groups: true,
+                },
 				take,
 				skip: page ? parseInt(page) * take : 0,
 			});

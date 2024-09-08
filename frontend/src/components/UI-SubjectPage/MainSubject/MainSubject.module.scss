@@ -25,13 +25,15 @@ $maxWidthContainer: 1920;
     align-items: center;
     column-gap: 11px;
     border-bottom: 1px solid #fff;
-    padding-bottom: 10px;
+    padding-bottom: 3px;
     
     &__text{
         font-size: 1.0625rem;
         text-overflow: ellipsis;
         max-width: 400px;
         overflow: hidden;
+        height: 20px;
+        margin-top: 5px;
         white-space: normal;
         @include adaptive-value(max-width, 1100, 250, 1)
     }

@@ -51,7 +51,7 @@ const router = createBrowserRouter([
     )
   },
   {
-    path: '/materials',
+    path: '/materials/:subjectName',
     element: 
     (
       <ProtectedRoute>

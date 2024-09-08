@@ -5,6 +5,8 @@ import MainSubject from "../MainSubject/MainSubject";
 import UserName from "../User/UserName";
 import { User } from "../../../model/user";
 import { motion } from 'framer-motion';
+import { getSubjects } from '../../../network/auth_api';
+import { useState, useEffect } from 'react';
 
 interface MainProps {
     className?: string,
@@ -13,10 +15,24 @@ interface MainProps {
 }
 
 
-const Main = ({ className, loggedInUser  }: MainProps) => {
+const  Main = ({ className, loggedInUser  }: MainProps) => {
     const { toggleTheme } = useTheme();
+    const [subjects, setSubjects] = useState<any[]>([]);
 
+    useEffect(() => {
+        const fetchSubjects = async () => {
+          try {
+            const data = await getSubjects();
+            setSubjects(data);
+          } catch (error) {
+            console.error("Failed to fetch subjects:", error);
+          } 
+        };
+        
+        fetchSubjects();
+      }, []);
 
+      
     return ( 
         <main className={`${classes.main} ${className}`}>
             <UserName user={loggedInUser} />
@@ -52,8 +68,9 @@ const Main = ({ className, loggedInUser  }: MainProps) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}>
-                <MainSubject>math</MainSubject>
-                <MainSubject>mova</MainSubject>
+                {subjects.map((subject:any) => (                   
+                    <MainSubject subjectName={subject.name} key={subject.id}>{subject.name}</MainSubject>                    
+                ))}
             </motion.div>
         </main>
      );

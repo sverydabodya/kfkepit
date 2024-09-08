@@ -3,51 +3,61 @@ import Select , { MultiValue } from 'react-select';
 import customStyles from "../SelectStyles/SelectStyles";
 import makeAnimated from 'react-select/animated';
 import classes from './AddItemForm.module.scss'
+import { Item } from "../MainMaterial/MainMaterial";
+import { createMaterial } from "../../../network/auth_api";
 
-
+interface Group{
+    id: string,
+    name: string,
+    courseId: string
+}
 
 interface AddItemFormProps {
-    onAddItem: (name: string, groups: string[], files: File[]) => void;
+  onAddItem: (material: Item) => void;
+  subject: string;
+  groups: GroupOption[];
 }
 
 interface GroupOption {
     value: string;
     label: string;
 }
-const groupOptions: GroupOption[] = [
-    { value: 'КІ-11', label: 'КІ-11' },
-    { value: 'КІ-21', label: 'КІ-21' },
-    { value: 'КІ-31', label: 'КІ-31' },
-    { value: 'КІ-41', label: 'КІ-41' },
-    { value: 'М-11', label: 'М-11' },
-    { value: 'М-21', label: 'М-21' },
-    { value: 'М-31', label: 'М-31' },
-    { value: 'М-41', label: 'М-41' },
-    { value: 'ФБС-11', label: 'ФБС-11' },
-    { value: 'ФБС-21', label: 'ФБС-21' },
-    { value: 'ФБС-31', label: 'ФБС-31' },
-    { value: 'ФБС-41', label: 'ФБС-41' },
-    { value: 'КБ-11', label: 'КБ-11' },
-    { value: 'КБ-21', label: 'КБ-21' },
-    { value: 'КБ-31', label: 'КБ-31' },
-    { value: 'КБ-41', label: 'КБ-41' },
-    { value: 'ПР-11', label: 'ПР-11' },
-    { value: 'ПР-21', label: 'ПР-21' },
-    { value: 'ПР-31', label: 'ПР-31' },
-    { value: 'ПР-41', label: 'ПР-41' },
-  ];
+export interface createdItem {
+    name: string;
+    groups: Group[];
+    files: File[];
+    subject: string;
+}
 
 
-const AddItemForm: FC<AddItemFormProps> = ({ onAddItem }) => {
+
+const AddItemForm: FC<AddItemFormProps> = ({ onAddItem, subject, groups }) => {
     const [name, setName] = useState('');
-    const [groups, setGroups] = useState<MultiValue<GroupOption>>([]);
+    const [selectGroups, setSelectGroups] = useState<MultiValue<GroupOption>>([]);
     const [files, setFiles] = useState<File[]>([]);
+    
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (name && groups.length > 0) {
-            onAddItem(name, groups.map(group => group.value), files);
+        if (name && selectGroups.length > 0 && files.length > 0) {
+        const selectedGroups: Group[] = selectGroups.map(group => ({
+            id: group.value, 
+            name: group.label,
+            courseId: "someCourseId" 
+        }));
+        const newMaterial:createdItem = {name, groups: selectedGroups, files, subject};
+        try {
+            const createdMaterial = await createMaterial(newMaterial);
+            console.log('Material created successfully:', createdMaterial);
+            onAddItem(createdMaterial); 
+        } catch (error) {
+            console.error('Error creating material:', error);
         }
+        
+        } else {
+        alert('Будь ласка, заповніть всі поля!');
+        }
+    
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,11 +84,11 @@ const AddItemForm: FC<AddItemFormProps> = ({ onAddItem }) => {
                 />
                 <Select
                     isMulti
-                    options={groupOptions}
+                    options={groups}
                     styles={customStyles}
                     components={makeAnimated()}
-                    value={groups}
-                    onChange={setGroups}
+                    value={selectGroups}
+                    onChange={setSelectGroups}
                     placeholder="Виберіть групи"
                 />
             </div>
@@ -87,6 +97,7 @@ const AddItemForm: FC<AddItemFormProps> = ({ onAddItem }) => {
                     <input
                         className={classes.form__add}
                         type="file"
+                        accept=".pdf, .docs, .doc"
                         multiple
                         onChange={handleFileChange}
                     />

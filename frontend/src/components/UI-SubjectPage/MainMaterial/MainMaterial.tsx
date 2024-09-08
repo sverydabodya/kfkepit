@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Select , { MultiValue } from 'react-select';
 import classes from './MainMaterial.module.scss'
 import { useTheme } from "../../ThemeProvider";
@@ -6,10 +6,11 @@ import Modal from "../Modal/Modal";
 import customStyles from '../SelectStyles/SelectStyles';
 import makeAnimated from 'react-select/animated';
 import AddItemForm from "../AddItemForm/AddItemForm";
-import MainSubject from "../MainSubject/MainSubject";
 import UserName from "../User/UserName";
 import { User } from "../../../model/user";
 import { motion } from "framer-motion";
+import { getGroups, getMaterialsBySubject } from "../../../network/auth_api";
+import { useParams } from "react-router-dom";
 
 
 interface MainProps {
@@ -21,75 +22,84 @@ interface GroupOption {
     value: string;
     label: string;
 }
+interface Group{
+    id: string,
+    name: string,
+    courseId: string
+}
 
-interface Item {
-    id: number;
+export interface Item {
+    id?: string;
     name: string;
-    group: string;
-    files: File[];
+    groups: Group[];
+    files: string[];
+    subject: string;
+    createdAt?: Date;
 }
 
   
-  const groupOptions: GroupOption[] = [
-    { value: 'КІ-11', label: 'КІ-11' },
-    { value: 'КІ-21', label: 'КІ-21' },
-    { value: 'КІ-31', label: 'КІ-31' },
-    { value: 'КІ-41', label: 'КІ-41' },
-    { value: 'М-11', label: 'М-11' },
-    { value: 'М-21', label: 'М-21' },
-    { value: 'М-31', label: 'М-31' },
-    { value: 'М-41', label: 'М-41' },
-    { value: 'ФБС-11', label: 'ФБС-11' },
-    { value: 'ФБС-21', label: 'ФБС-21' },
-    { value: 'ФБС-31', label: 'ФБС-31' },
-    { value: 'ФБС-41', label: 'ФБС-41' },
-    { value: 'КБ-11', label: 'КБ-11' },
-    { value: 'КБ-21', label: 'КБ-21' },
-    { value: 'КБ-31', label: 'КБ-31' },
-    { value: 'КБ-41', label: 'КБ-41' },
-    { value: 'ПР-11', label: 'ПР-11' },
-    { value: 'ПР-21', label: 'ПР-21' },
-    { value: 'ПР-31', label: 'ПР-31' },
-    { value: 'ПР-41', label: 'ПР-41' },
-  ];
-
 
 
 const MainMaterial:FC<MainProps> = ({ className, loggedInUser }) => {
-
     const { toggleTheme } = useTheme();
     const [modalActive, setModalActive] = useState(false);
     const [selectedGroups, setSelectedGroups] = useState<MultiValue<GroupOption>>([]);
-    const [items, setItems] = useState<Item[]>([]);
     const [detailModalActive, setDetailModalActive] = useState(false);
     const [activeItem, setActiveItem] = useState<Item | null>(null);
+    const [materials, setMaterials] = useState<Item[]>([]);
+    const [groups, setGrops] = useState();
+    const { subjectName } = useParams();
 
     const handleGroupChange = (selectedOptions: MultiValue<GroupOption>) => {
         setSelectedGroups(selectedOptions);
     };
+    
+    const addItem = (newMaterial:Item) => {
 
-    const addItem = (name: string, groups: string[], files: File[]) => {
-        const newItems = groups.map(group => ({
-            id: items.length + 1,
-            name,
-            group,
-            files
-        }));
-        setItems([...items, ...newItems]);
+        const updatedMaterials = [...materials, newMaterial];
+
+
+        setMaterials(updatedMaterials);
         setModalActive(false);
     };
+    
 
-    const showItemDetails = (item: Item) => {
-        setActiveItem(item);
+    const showItemDetails = (material: Item) => {
+        setActiveItem(material);
         setDetailModalActive(true);
     };
 
-    const filteredItems = selectedGroups.length > 0 
-        ? items.filter(item => selectedGroups.some(group => group.value === item.group))
-        : items;
 
-    
+    const filteredMaterials = selectedGroups.length > 0 
+    ? materials.filter(material => 
+        material.groups.some((group: Group) => 
+          selectedGroups.some(selectedGroup => selectedGroup.value === group.name)
+        )
+      )
+    : materials;
+  
 
+
+        useEffect(() => {
+            const fetchMaterialsBySubject = async () => {
+              try {
+                const groups = await getGroups();
+                setGrops(groups.map((group: Group) => {
+                    return {value: group.name, label: group.name}
+                }));                     
+                const data = await getMaterialsBySubject(loggedInUser, subjectName!);
+                setMaterials(data);
+                console.log(data);
+              } catch (error) {
+                console.error("Failed to fetch materials:", error);
+              }
+            };
+          
+            fetchMaterialsBySubject();
+          }, [loggedInUser, subjectName]);
+
+          
+        
     return ( 
         <main className={`${classes.main} ${className}`}>
             <UserName user={loggedInUser}/>
@@ -139,7 +149,7 @@ const MainMaterial:FC<MainProps> = ({ className, loggedInUser }) => {
                     </button>
                     <Select
                         isMulti
-                        options={groupOptions}
+                        options={groups}
                         styles={customStyles}
                         components={makeAnimated()}
                         value={selectedGroups}
@@ -147,28 +157,46 @@ const MainMaterial:FC<MainProps> = ({ className, loggedInUser }) => {
                         placeholder="Виберіть групи для фільтрації"
                     />
                 </div>
-                {filteredItems.map(item => (
-                    <motion.div key={item.id} className={classes.main__item} onClick={() => showItemDetails(item)}
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4 }}>
-                        <MainSubject>{item.name} (Група: {item.group})</MainSubject>
-                    </motion.div>
-                ))}
+                {filteredMaterials.length === 0 ? (
+                <p>Немає матеріалів для відображення</p>
+                ) : (
+                    filteredMaterials.map((material: Item) => (
+                        <motion.div className={classes.material__item} key={material.id} onClick={() => showItemDetails(material)}
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4 }}>
+                            <svg className='white' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18.4615 2.22218H10.7692V0.740727C10.7692 0.544274 10.6882 0.355867 10.5439 0.216954C10.3997 0.0780407 10.204 0 10 0C9.79599 0 9.60033 0.0780407 9.45607 0.216954C9.31181 0.355867 9.23077 0.544274 9.23077 0.740727V2.22218H1.53846C1.13044 2.22218 0.739122 2.37826 0.450605 2.65609C0.162087 2.93392 0 3.31073 0 3.70364V14.8145C0 15.2075 0.162087 15.5843 0.450605 15.8621C0.739122 16.1399 1.13044 16.296 1.53846 16.296H5.32308L3.24519 18.796C3.11768 18.9494 3.05871 19.1454 3.08125 19.3407C3.1038 19.5361 3.206 19.7148 3.36538 19.8376C3.52477 19.9604 3.72828 20.0172 3.93114 19.9955C4.13401 19.9738 4.31961 19.8753 4.44712 19.7219L7.29231 16.296H12.7077L15.5529 19.7219C15.616 19.7979 15.6941 19.8611 15.7826 19.9081C15.8711 19.955 15.9684 19.9847 16.0689 19.9955C16.1693 20.0062 16.271 19.9978 16.368 19.9707C16.4651 19.9436 16.5557 19.8984 16.6346 19.8376C16.7135 19.7768 16.7792 19.7016 16.828 19.6164C16.8767 19.5311 16.9076 19.4375 16.9187 19.3407C16.9299 19.244 16.9212 19.1461 16.893 19.0527C16.8649 18.9592 16.8179 18.8719 16.7548 18.796L14.6769 16.296H18.4615C18.8696 16.296 19.2609 16.1399 19.5494 15.8621C19.8379 15.5843 20 15.2075 20 14.8145V3.70364C20 3.31073 19.8379 2.93392 19.5494 2.65609C19.2609 2.37826 18.8696 2.22218 18.4615 2.22218ZM18.4615 14.8145H1.53846V3.70364H18.4615V14.8145Z" fill="white"/>
+                            </svg>
+                            <svg className='black' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18.4615 2.22218H10.7692V0.740727C10.7692 0.544274 10.6882 0.355867 10.5439 0.216954C10.3997 0.0780407 10.204 0 10 0C9.79599 0 9.60033 0.0780407 9.45607 0.216954C9.31181 0.355867 9.23077 0.544274 9.23077 0.740727V2.22218H1.53846C1.13044 2.22218 0.739122 2.37826 0.450605 2.65609C0.162087 2.93392 0 3.31073 0 3.70364V14.8145C0 15.2075 0.162087 15.5843 0.450605 15.8621C0.739122 16.1399 1.13044 16.296 1.53846 16.296H5.32308L3.24519 18.796C3.11768 18.9494 3.05871 19.1454 3.08125 19.3407C3.1038 19.5361 3.206 19.7148 3.36538 19.8376C3.52477 19.9604 3.72828 20.0172 3.93114 19.9955C4.13401 19.9738 4.31961 19.8753 4.44712 19.7219L7.29231 16.296H12.7077L15.5529 19.7219C15.616 19.7979 15.6941 19.8611 15.7826 19.9081C15.8711 19.955 15.9684 19.9847 16.0689 19.9955C16.1693 20.0062 16.271 19.9978 16.368 19.9707C16.4651 19.9436 16.5557 19.8984 16.6346 19.8376C16.7135 19.7768 16.7792 19.7016 16.828 19.6164C16.8767 19.5311 16.9076 19.4375 16.9187 19.3407C16.9299 19.244 16.9212 19.1461 16.893 19.0527C16.8649 18.9592 16.8179 18.8719 16.7548 18.796L14.6769 16.296H18.4615C18.8696 16.296 19.2609 16.1399 19.5494 15.8621C19.8379 15.5843 20 15.2075 20 14.8145V3.70364C20 3.31073 19.8379 2.93392 19.5494 2.65609C19.2609 2.37826 18.8696 2.22218 18.4615 2.22218ZM18.4615 14.8145H1.53846V3.70364H18.4615V14.8145Z" fill="black"/>
+                            </svg>
+                            <div className={classes.material__content}>
+                                <span className={classes.material__title}>{material.name}</span>
+                                {/* <span className={classes.material__group}>{material.groups[0].name}</span>  */}
+                                <span className={classes.material__date}>{new Date(material.createdAt!).toLocaleDateString('uk-UA')}</span>
+                            </div>
+                        </motion.div>
+                    ))
+                )}
                 <Modal active={modalActive} setActive={setModalActive}>
-                    <AddItemForm onAddItem={addItem} />
+                    <AddItemForm onAddItem={addItem} subject={subjectName!} groups={groups}/>
                 </Modal>
                 {activeItem && (
                     <Modal active={detailModalActive} setActive={setDetailModalActive}>
                         <div className={classes.file}>
                             <h3 className={classes.file__title}>{activeItem.name}</h3>
-                            <p className={classes.file__label}>Група: {activeItem.group}</p>
+                            <p className={classes.file__label}>
+                                Групи: {activeItem.groups.map((group: Group) => group.name).join(', ')}
+                            </p>
                             <ul>
-                                {activeItem.files.map((file, index) => (
-                                    <li className={classes.file__item} key={index}>
-                                        <a href={URL.createObjectURL(file)} download={file.name}>{file.name}</a>
-                                    </li>
-                                ))}
+                            {activeItem.files.map((file, index) => (
+                                <li className={classes.file__item} key={index}>
+                                    <a href="#">
+                                        {file.split("/")[1]}
+                                    </a>
+                                </li>
+                            ))}
                             </ul>
                         </div>
                     </Modal>
