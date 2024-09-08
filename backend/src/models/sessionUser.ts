@@ -1,6 +1,6 @@
 import { Role } from "@prisma/client";
 
-type SessionUser = {
+export type SessionUser = {
 	id: string;
 	username: string;
 	role: Role;
@@ -9,4 +9,3 @@ type SessionUser = {
 	courseId?: string;
 };
 
-export default SessionUser;

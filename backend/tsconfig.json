@@ -12,10 +12,16 @@
 		"paths": {
 			"*": ["node_modules/*", "types/*"]
 		},
-		"typeRoots": ["./node_modules/@types", "types"],
+		"typeRoots": ["./node_modules/@types", "types"]
 	},
 	"ts-node": {
 		"files": true
 	},
-	"include": ["./src/**/*", "types", "types/**/*.d.ts", "types/*.d.ts"]
+	"include": [
+		"./src/**/*",
+		"types",
+		"types/**/*.d.ts",
+		"types/*.d.ts",
+		"src/**/*.ts"
+	]
 }

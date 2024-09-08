@@ -1,10 +1,8 @@
-import SessionUser from "../models/SessionUser";
+import { SessionUser } from "../models/SessionUser";
 import { RequestHandler } from "express";
 import { Role } from "@prisma/client";
 import createHttpError from "http-errors";
 import * as UserService from "../services/users";
-
-
 
 type LoginBody = {
 	username: string;

@@ -6,6 +6,7 @@
 	"scripts": {
 		"start": "npx tsc && node dist/index.js",
 		"dev": "npx nodemon src/index.ts",
+		"build": "npx tsc",
 		"postinstall": "prisma generate"
 	},
 	"author": "",
