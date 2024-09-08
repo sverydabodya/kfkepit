@@ -3,6 +3,7 @@ import morgan from "morgan";
 import express from "express";
 import expressSession from "express-session";
 import cors from "cors";
+import path from "path";
 import helmet from "helmet";
 import mainRouter from "./routes/index";
 import { errorHandler } from "./middlewares/errorHandler";
@@ -13,16 +14,14 @@ const port = process.env.PORT || 5000;
 
 app.use(expressSession(sesssionConfig));
 
-app.use(cors({
-	origin: 'http://localhost:5173',
-	credentials: true,
-}));
+app.use(cors());
 //helmet needs configuration and maybe useless
 app.use(helmet());
 //todo add rate limiter, cache
 app.use(morgan("dev"));
 app.use(express.json());
 
+app.use("/public", express.static(path.join(__dirname, "..", "public")));
 app.use("/api/v1", mainRouter);
 
 app.use(errorHandler);
