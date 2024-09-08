@@ -14,7 +14,22 @@ const port = process.env.PORT || 5000;
 
 app.use(expressSession(sesssionConfig));
 
-app.use(cors());
+app.use(
+	cors({
+		origin: function (origin, callback) {
+			const allowedOrigins = [
+				"http://localhost:5173",
+				"https://kfkepit.onrender.com",
+			];
+			if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+				callback(null, true);
+			} else {
+				callback(new Error("Not allowed by CORS"));
+			}
+		},
+		credentials: true,
+	})
+);
 //helmet needs configuration and maybe useless
 app.use(helmet());
 //todo add rate limiter, cache
