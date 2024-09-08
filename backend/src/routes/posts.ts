@@ -18,7 +18,7 @@ router.get(
 
 router.post(
 	"/",
-	isAdmin,
+	// isAdmin,
 	upload.single("cover"),
 	validateRequest({
 		body: z.object({ title: z.string(), content: z.string() }),

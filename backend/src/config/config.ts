@@ -64,8 +64,23 @@ export const materialsMulterConfig: multer.Options = {
 export const postsMulterConfig: multer.Options = {
 	storage: multer.diskStorage({
 		destination: function (req, file, cb) {
-			// cb(null, path.join(__dirname, "..", "..", "/public/images"));
-			cb(null, path.resolve(__dirname, "../../../public/images"));
+			cb(null, path.join(__dirname, "..", "..", "/public/images"));
+			// cb(null, path.resolve(__dirname, "../../../public/images"));
+		},
+		filename: function (req, file, cb) {
+			file.originalname = Buffer.from(file.originalname, "latin1").toString(
+				"utf8"
+			);
+			cb(null, file.originalname);
+		},
+	}),
+};
+
+export const schedulesMulterConfig: multer.Options = {
+	storage: multer.diskStorage({
+		destination: function (req, file, cb) {
+			cb(null, path.join(__dirname, "..", "..", "/public/schedules"));
+			// cb(null, path.resolve(__dirname, "../../../public/schedules"));
 		},
 		filename: function (req, file, cb) {
 			file.originalname = Buffer.from(file.originalname, "latin1").toString(

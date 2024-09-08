@@ -10,7 +10,7 @@ export const getAllMaterials = async () => {
 
 		return materials;
 	} catch (error) {
-		throw new Error(`Failed to fetch: ${error.message}`);
+		throw new Error(`Failed to fetch materials`);
 	}
 };
 
@@ -22,7 +22,7 @@ export const getMaterialById = async (materialId: string) => {
 
 		return material;
 	} catch (error) {
-		throw new Error(`Failed to fetch: ${error.message}`);
+		throw new Error(`Failed to fetch material`);
 	}
 };
 
@@ -38,6 +38,9 @@ export const getMaterialsBySubject = async (
 				subject: { name: subjectName },
 				groups: { some: { id: groupId } },
 			},
+			include: {
+				groups: true,
+			},
 			orderBy: {
 				createdAt: "desc",
 			},
@@ -48,7 +51,7 @@ export const getMaterialsBySubject = async (
 		return materials;
 	} catch (error) {
 		console.error(error);
-		throw new Error(`Failed to fetch: ${error.message}`);
+		throw new Error(`Failed to fetch materials`);
 	}
 };
 
@@ -66,6 +69,9 @@ export const getMaterialsByGroup = async (
 				where: {
 					authorId: userId,
 					subject: { name: subject },
+				},
+				include: {
+					groups: true,
 				},
 				orderBy: {
 					createdAt: "desc",
@@ -91,7 +97,7 @@ export const getMaterialsByGroup = async (
 		return materials;
 	} catch (error) {
 		console.error(error);
-		throw new Error(`Failed to fetch: ${error.message}`);
+		throw new Error(`Failed to fetch materials`);
 	}
 };
 
@@ -141,7 +147,7 @@ export const newMaterial = async (
 
 		return material;
 	} catch (error) {
-		throw new Error(`Failed to create material: ${error.message}`);
+		throw new Error(`Failed to create material`);
 	}
 };
 
@@ -153,8 +159,6 @@ export const deleteMaterial = async (materialId: string) => {
 
 		return material;
 	} catch (error) {
-		throw new Error(`Failed to delete material: ${error.message}`);
+		throw new Error(`Failed to delete material`);
 	}
 };
-
-

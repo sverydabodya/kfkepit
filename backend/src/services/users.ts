@@ -15,6 +15,6 @@ export const getUser = async (username: string, password: string) => {
 		return user;
 	} catch (error) {
 		console.error(error);
-		throw new Error(`Failed to fetch: ${error.message}`);
+		throw new Error(`Failed to fetch user`);
 	}
 };

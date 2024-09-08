@@ -36,3 +36,27 @@ export const getSchedule: RequestHandler = async (req, res, next) => {
 		next(error);
 	}
 };
+
+export const createSchedule: RequestHandler = async (req, res, next) => {
+	const file = "schedules/" + req.file?.originalname;
+	const name = req.body.name;
+
+	try {
+		const schedule = await ScheludesService.createSchedule(name, file);
+
+		res.status(200).json(schedule);
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const deleteSchedule: RequestHandler = async (req, res, next) => {
+	const id = req.params.id;
+
+	try {
+		const schedule = await ScheludesService.deleteSchedule(id);
+		res.status(200).json(schedule);
+	} catch (error) {
+		next(error);
+	}
+};

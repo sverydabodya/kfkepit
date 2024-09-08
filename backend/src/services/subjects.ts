@@ -14,6 +14,6 @@ export const getAllSubjects = async (groupId: string) => {
 		return subjects.subjects;
 	} catch (error) {
 		console.error(error);
-		throw new Error(`Failed to fetch: ${error.message}`);
+		throw new Error(`Failed to fetch subjects`);
 	}
 };

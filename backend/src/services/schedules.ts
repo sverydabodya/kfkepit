@@ -1,17 +1,17 @@
 import prisma from "./db";
 
-export const getScheduleByCourse = async (courseId: string) => {
+export const getScheduleById = async (id: string) => {
 	try {
 		const schelude = await prisma.schedule.findFirst({
 			where: {
-				courseId: courseId,
+				id
 			},
 		});
 
 		return schelude;
 	} catch (error) {
 		console.error(error);
-		throw new Error(`Failed to fetch: ${error.message}`);
+		throw new Error(`Failed to fetch schedule`);
 	}
 };
 
@@ -22,6 +22,35 @@ export const getAllScheludes = async () => {
 		return scheludes;
 	} catch (error) {
 		console.error(error);
-		throw new Error(`Failed to fetch: ${error.message}`);
+		throw new Error(`Failed to fetch schedules`);
+	}
+};
+
+export const createSchedule = async (name: string, file: string) => {
+	try {
+		const schedule = await prisma.schedule.create({
+			data: {
+				name,
+				file,
+			},
+		});
+
+		return schedule;
+	} catch (error) {
+		console.error(error);
+		throw new Error(`Failed to create schedule`);
+	}
+};
+
+export const deleteSchedule = async (id: string) => {
+	try {
+		const schedule = await prisma.schedule.delete({
+			where: { id },
+		});
+
+		return schedule;
+	} catch (error) {
+		console.error(error);
+		throw new Error(`Failed to delete schedule`);
 	}
 };
