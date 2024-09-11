@@ -62,7 +62,10 @@ export const materialsMulterConfig: multer.Options = {
 };
 
 export const postsMulterConfig: multer.Options = {
-	storage: multer.diskStorage({
+	limits: {
+		fileSize: 25 * 1024 * 1024, // 25MB limit
+	},
+	storage: multer.diskStorage({		
 		destination: function (req, file, cb) {
 			cb(null, path.join(__dirname, "..", "..", "/public/images"));
 			// cb(null, path.resolve(__dirname, "../../../public/images"));

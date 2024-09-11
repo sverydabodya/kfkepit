@@ -4,6 +4,7 @@ import { useTheme } from "../../ThemeProvider";
 import Modal from "../Modal/Modal";
 import UserName from "../User/UserName";
 import { User } from "../../../model/user";
+import { useNavigate } from "react-router-dom";
 
 interface MainProp {
     className?: string;
@@ -16,6 +17,13 @@ const SсheduleMain:FC<MainProp> = ({ className,  loggedInUser}) => {
     const { toggleTheme } = useTheme();
     const [modalActive, setModalActive] = useState(false);
     const [scheduleUrl, setScheduleUrl] = useState("https://view.officeapps.live.com/op/embed.aspx?src=kkepit.onrender.com/schedules/3 курс.xlsx&wdHideSheetTabs=True&wdHideHeaders=True&wdDownloadButton=True");
+    const navigate = useNavigate();
+
+
+    const handleLogoutSuccessful = () => {
+        console.log("User has been logged out");
+        navigate('/auth');
+      };
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -29,7 +37,7 @@ const SсheduleMain:FC<MainProp> = ({ className,  loggedInUser}) => {
 
     return (
         <main className={`${classes.main} ${className}`}>
-            <UserName user={loggedInUser}/>
+            <UserName user={loggedInUser} onLogoutSuccessful={handleLogoutSuccessful}/>
             <div className={classes.main__path}>
                     <div className={classes.main__img}>
                         <svg className="white" width="20" height="20" viewBox="0 0 20 20"  xmlns="http://www.w3.org/2000/svg">

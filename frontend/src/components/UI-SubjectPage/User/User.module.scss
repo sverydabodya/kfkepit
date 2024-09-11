@@ -106,6 +106,7 @@
         transition: 0.5s;
         cursor: pointer;
         list-style-type: none;
+        background-color: transparent;
         &::after{
             position: absolute;
             content: '';
