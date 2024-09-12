@@ -10,13 +10,15 @@ const router = express.Router();
 const upload = multer(schedulesMulterConfig);
 
 router.get("/", SchedulesController.getAllSchedules);
-router.get("/:path", SchedulesController.getSchedule);
+router.get("/:courseId", SchedulesController.getSchedule);
 
 router.post(
 	"/",
 	isAdmin,
 	upload.single("schedule"),
-	validateRequest({ body: z.object({ name: z.string() }) }),
+	validateRequest({
+		body: z.object({ name: z.string(), courseId: z.string() }),
+	}),
 	SchedulesController.createSchedule
 );
 

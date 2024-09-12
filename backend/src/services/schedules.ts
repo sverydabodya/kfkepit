@@ -1,10 +1,10 @@
 import prisma from "./db";
 
-export const getScheduleById = async (id: string) => {
+export const getScheduleByCourseId = async (courseId: string) => {
 	try {
 		const schelude = await prisma.schedule.findFirst({
 			where: {
-				id
+				courseId,
 			},
 		});
 
@@ -26,12 +26,17 @@ export const getAllScheludes = async () => {
 	}
 };
 
-export const createSchedule = async (name: string, file: string) => {
+export const createSchedule = async (
+	name: string,
+	file: string,
+	course: string
+) => {
 	try {
 		const schedule = await prisma.schedule.create({
 			data: {
 				name,
 				file,
+				courseId: course,
 			},
 		});
 

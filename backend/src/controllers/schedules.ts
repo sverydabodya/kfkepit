@@ -18,14 +18,10 @@ export const getAllSchedules: RequestHandler = async (req, res, next) => {
 };
 
 export const getSchedule: RequestHandler = async (req, res, next) => {
-	const path = req.params.path;
+	const courseId = req.params.courseId;
 
 	try {
-		const schedule = await prisma.schedule.findFirst({
-			where: {
-				file: "schedules/" + path,
-			},
-		});
+		const schedule = await ScheludesService.getScheduleByCourseId(courseId);
 
 		if (!schedule) {
 			throw createHttpError(404, "Schedule not found");
@@ -40,9 +36,10 @@ export const getSchedule: RequestHandler = async (req, res, next) => {
 export const createSchedule: RequestHandler = async (req, res, next) => {
 	const file = "schedules/" + req.file?.originalname;
 	const name = req.body.name;
+	const course = req.body.course
 
 	try {
-		const schedule = await ScheludesService.createSchedule(name, file);
+		const schedule = await ScheludesService.createSchedule(name, file, course);
 
 		res.status(200).json(schedule);
 	} catch (error) {
