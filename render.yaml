@@ -1,0 +1,45 @@
+# Exported from Render on 2024-09-12T09:03:15Z
+databases:
+  - name: kfkepit
+    databaseName: kfkepit_o36j
+    user: kfkepit_o36j_user
+    plan: free
+    region: frankfurt
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: everywhere
+    postgresMajorVersion: "16"
+services:
+  - type: web
+    name: kfkepit
+    runtime: static
+    repo: https://github.com/sverydabodya/kfkepit
+    envVars:
+      - key: VITE_HOST
+        sync: false
+    buildCommand: npm run build
+    staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /
+    rootDir: ./frontend
+  - type: web
+    name: kfkepit backend
+    runtime: node
+    repo: https://github.com/sverydabodya/kfkepit
+    plan: free
+    envVars:
+      - key: DB_URL
+        fromDatabase:
+          name: kfkepit
+          property: connectionString
+      - key: SESSION_SECRET
+        sync: false
+      - key: PORT
+        sync: false
+    region: frankfurt
+    buildCommand: npm install; npx tsc
+    startCommand: npm start
+    rootDir: ./backend
+version: "1"
