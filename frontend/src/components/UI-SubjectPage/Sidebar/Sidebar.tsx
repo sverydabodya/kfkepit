@@ -12,6 +12,7 @@ interface SidebarProps {
 
 
 const Sidebar = ({ onLogoutSuccessful = () => {} }: SidebarProps) => {
+    
     const navigate = useNavigate();
 
     async function logout() {

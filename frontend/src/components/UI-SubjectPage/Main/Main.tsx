@@ -7,6 +7,7 @@ import { User } from "../../../model/user";
 import { motion } from 'framer-motion';
 import { getSubjects } from '../../../network/auth_api';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface MainProps {
     className?: string,
@@ -18,6 +19,13 @@ interface MainProps {
 const  Main = ({ className, loggedInUser  }: MainProps) => {
     const { toggleTheme } = useTheme();
     const [subjects, setSubjects] = useState<any[]>([]);
+    const navigate = useNavigate();
+
+
+    const handleLogoutSuccessful = () => {
+        console.log("User has been logged out");
+        navigate('/auth');
+      };
 
     useEffect(() => {
         const fetchSubjects = async () => {
@@ -35,7 +43,7 @@ const  Main = ({ className, loggedInUser  }: MainProps) => {
       
     return ( 
         <main className={`${classes.main} ${className}`}>
-            <UserName user={loggedInUser} />
+            <UserName user={loggedInUser} onLogoutSuccessful={handleLogoutSuccessful} />
             <div className={classes.main__path}>
                 <div className={classes.main__img}>
                     <svg className="white" width="20" height="20" viewBox="0 0 20 20"  xmlns="http://www.w3.org/2000/svg">
