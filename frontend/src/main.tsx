@@ -13,6 +13,7 @@ import MaterialsPage from "./components/MaterialsPage";
 import PostDetail from "./components/PostDetail";
 import AuthProvider from "./components/AuthProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ScheduleGroup from "./components/ScheduleGroup";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <SchedulePage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/schedule/:id",
+    element: (
+      <ProtectedRoute>
+        <ScheduleGroup />
       </ProtectedRoute>
     ),
   },

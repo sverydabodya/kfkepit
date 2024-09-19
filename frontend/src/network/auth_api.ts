@@ -3,6 +3,7 @@ import { ConflictError, UnauthorizedError } from "../errors/http_errors";
 import { Item } from "../components/UI-SubjectPage/MainMaterial/MainMaterial";
 import { createdItem } from "../components/UI-SubjectPage/AddItemForm/AddItemForm";
 import { createdPost } from "../components/NewsPage";
+import { createdSchedule } from "../components/UI-SubjectPage/ScheduleMain/SсheduleMain";
 
 async function fetchData(input: RequestInfo, init?: RequestInit) {
   const response = await fetch(input, { credentials: "include", ...init });
@@ -163,5 +164,43 @@ export async function deletePosts(id: string) {
     {
       method: "DELETE",
     }
+  );
+}
+export async function getSchedules() {
+  const response = await fetchData(
+    `${import.meta.env.VITE_HOST}/api/v1/schedules`,
+    { method: "GET" }
+  );
+  const schedule = response.json();
+  return schedule;
+}
+export async function getCourses() {
+  const response = await fetchData(
+    `${import.meta.env.VITE_HOST}/api/v1/courses`,
+    { method: "GET" }
+  );
+  const courses = response.json();
+  return courses;
+}
+export async function createSchedule(scheduleData: createdSchedule) {
+  const formData = new FormData();
+  formData.append("name", scheduleData.name);
+  formData.append("schedule", scheduleData.schedule);
+  formData.append("courseId", scheduleData.courseId);
+  console.log(scheduleData);
+
+  const response = await fetchData(
+    `${import.meta.env.VITE_HOST}/api/v1/schedules`,
+    { method: "POST", body: formData }
+  );
+  if (!response.ok) {
+    throw new Error("Failed to create schedule");
+  }
+  return await response.json();
+}
+export async function deleteSchedule(id: string) {
+  const response = await fetchData(
+    `${import.meta.env.VITE_HOST}/api/v1/schedules/${id}`,
+    { method: "DELETE" }
   );
 }

@@ -1,90 +1,25 @@
-import { FC, useEffect, useState } from "react";
-import classes from "./SсheduleMain.module.scss";
-import { useTheme } from "../../ThemeProvider";
-import Modal from "../Modal/Modal";
-import UserName from "../User/UserName";
+import { FC } from "react";
 import { User } from "../../../model/user";
-import { useNavigate } from "react-router-dom";
-import {
-  createSchedule,
-  deleteSchedule,
-  getCourses,
-  getSchedules,
-} from "../../../network/auth_api";
-
-import AddScheduleForm from "../AddScheduleForm/AddScheduleForm";
+import classes from "./ScheduleGroupMain.module.scss";
+import { useTheme } from "../../ThemeProvider";
+import UserName from "../User/UserName";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface MainProp {
   className?: string;
   loggedInUser: User;
 }
-export interface Schedule {
-  id: string;
-  name: string;
-  file: string;
-  course: {
-    id: string;
-    name: string;
-  };
-}
-interface Course {
-  id: string;
-  name: string;
-}
-export interface createdSchedule {
-  name: string;
-  schedule: File;
-  courseId: string;
-}
 
-const SсheduleMain: FC<MainProp> = ({ className, loggedInUser }) => {
+const ScheduleGroupMain: FC<MainProp> = ({ className, loggedInUser }) => {
   const { toggleTheme } = useTheme();
-  const [modalActive, setModalActive] = useState(false);
-  const [schedule, setSchedule] = useState([]);
-  const [courses, setCourses] = useState();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { scheduleUrl } = location.state;
 
   const handleLogoutSuccessful = () => {
     console.log("User has been logged out");
     navigate("/auth");
   };
-
-  const handleScheduleClick = (id: string) => {
-    const selectedSchedule = schedule.find((p) => p.id === id);
-    if (selectedSchedule) {
-      navigate(`/schedule/${id}`, {
-        state: { scheduleUrl: selectedSchedule.file },
-      });
-    }
-  };
-
-  const handleAddSchedule = (newSchedule: Schedule) => {
-    setSchedule([...schedule, newSchedule]);
-  };
-  const handleDeleteSchedule = async (scheduleId: string) => {
-    if (window.confirm("Ви впевнені, що хочете видалити цей розклад?")) {
-      try {
-        await deleteSchedule(scheduleId);
-        setSchedule(schedule.filter((s) => s.id !== scheduleId));
-      } catch (error) {
-        console.error("Error deleting schedule:", error);
-      }
-    }
-  };
-
-  useEffect(() => {
-    const fetchSchedules = async () => {
-      const schedule = await getSchedules();
-      setSchedule(schedule);
-      const courses = await getCourses();
-      setCourses(
-        courses.map((course: Course) => {
-          return { value: course.id, label: course.name };
-        })
-      );
-    };
-    fetchSchedules();
-  }, []);
 
   return (
     <main className={`${classes.main} ${className}`}>
@@ -150,7 +85,7 @@ const SсheduleMain: FC<MainProp> = ({ className, loggedInUser }) => {
           </svg>
         </div>
         <div className={classes.main__text}>
-          <span>Розклад</span>
+          <span>Розклад курсу</span>
         </div>
         <div className={classes.theme} onClick={toggleTheme}>
           <svg
@@ -184,52 +119,12 @@ const SсheduleMain: FC<MainProp> = ({ className, loggedInUser }) => {
           </svg>
         </div>
       </div>
-      <button
-        className={classes.main__button}
-        onClick={() => setModalActive(true)}>
-        Завантажити новий розклад
-      </button>
       <div className={classes.main__content}>
-        {schedule.map((schedule: Schedule) => (
-          <div className={classes.main__schedule} key={schedule.id}>
-            <div
-              className={classes.schedule__file}
-              onClick={() => handleScheduleClick(schedule.id)}>
-              <svg
-                width="42"
-                height="51"
-                viewBox="0 0 42 51"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M41.1988 14.0533L28.4162 0.831111C28.1618 0.567654 27.8597 0.358646 27.5272 0.216037C27.1947 0.073429 26.8382 1.73602e-05 26.4783 0H4.56522C3.35445 0 2.19327 0.497518 1.33712 1.38311C0.480977 2.2687 0 3.46981 0 4.72222V46.2778C0 47.5302 0.480977 48.7313 1.33712 49.6169C2.19327 50.5025 3.35445 51 4.56522 51H37.4348C38.6456 51 39.8067 50.5025 40.6629 49.6169C41.519 48.7313 42 47.5302 42 46.2778V16.0556C42 15.3047 41.7118 14.5846 41.1988 14.0533ZM28.3043 8.73611L33.5543 14.1667H28.3043V8.73611ZM5.47826 45.3333V5.66667H22.8261V17C22.8261 17.7514 23.1147 18.4721 23.6284 19.0035C24.142 19.5348 24.8388 19.8333 25.5652 19.8333H36.5217V45.3333H5.47826Z"
-                  fill="white"
-                />
-              </svg>
-            </div>
-            <div
-              className={classes.schedule__title}
-              onClick={() => handleScheduleClick(schedule.id)}>
-              {schedule.name}
-            </div>
-            <div
-              className={classes.schedule__group}
-              onClick={() => handleScheduleClick(schedule.id)}>
-              {schedule.course ? schedule.course.name : "Курс не вказано"}
-            </div>
-            <button
-              className={classes.schedule__delete}
-              onClick={() => handleDeleteSchedule(schedule.id)}>
-              Видалити
-            </button>
-          </div>
-        ))}
+        <iframe
+          src={import.meta.env.VITE_HOST + "public" + scheduleUrl}></iframe>
       </div>
-      <Modal active={modalActive} setActive={setModalActive}>
-        <AddScheduleForm courses={courses} onAddSchedule={handleAddSchedule} />
-      </Modal>
     </main>
   );
 };
 
-export default SсheduleMain;
+export default ScheduleGroupMain;
