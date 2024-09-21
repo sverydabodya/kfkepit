@@ -57,6 +57,12 @@ export async function login(credentials: LoginCredentials): Promise<User> {
   return user;
 }
 
+export async function logout() {
+	await fetchData(`${import.meta.env.VITE_HOST}/api/v1/users/logout`, {
+		method: "POST",
+	});
+}
+
 export async function getSubjects() {
   const response = await fetchData(
     `${import.meta.env.VITE_HOST}/api/v1/subjects`,
@@ -111,12 +117,7 @@ export async function createMaterial(newMaterial: createdItem) {
   }
 }
 
-export async function logout() {
-  await fetchData(`${import.meta.env.VITE_HOST}/api/v1/users/logout`, {
-    method: "POST",
-  });
-  localStorage.removeItem("loggedInUser");
-}
+
 
 export async function getGroups() {
   const response = await fetchData(

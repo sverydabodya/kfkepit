@@ -150,7 +150,7 @@ export const deleteMaterial: RequestHandler = async (req, res, next) => {
 			throw createHttpError(404, "Material not found");
 		}
 
-		res.status(200).json({ success: true });
+		res.status(200);
 	} catch (error) {
 		next(error);
 	}

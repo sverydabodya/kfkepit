@@ -7,7 +7,7 @@ import * as UserService from "../services/users";
 type LoginBody = {
 	username: string;
 	password: string;
-	rememberMe: string;
+	rememberMe: boolean;
 };
 
 export const getAuthenticatedUser: RequestHandler = (req, res, next) => {
@@ -57,8 +57,10 @@ export const login: RequestHandler<unknown, unknown, LoginBody> = async (
 		}
 
 		req.session.user = sessionUser;
-		if (rememberMe === "on")
+
+		if (rememberMe) {
 			req.session.cookie.maxAge = 365 * 24 * 60 * 60 * 1000; // 1 year
+		}
 
 		req.session.save(() => {
 			res.status(200).json(sessionUser);
@@ -69,11 +71,19 @@ export const login: RequestHandler<unknown, unknown, LoginBody> = async (
 };
 
 export const logout: RequestHandler = (req, res, next) => {
+	res.clearCookie("connect.sid", {
+		httpOnly: true,
+		path: "/",
+		secure: false,
+		sameSite: "none",
+		domain: process.env.DOMAIN,
+	});
+
 	req.session.destroy((error) => {
 		if (error) {
 			next(error);
 		} else {
-			res.status(200).json({ success: true });
+			res.status(200).send("Logged out");
 		}
 	});
 };

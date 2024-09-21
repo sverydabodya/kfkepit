@@ -17,11 +17,11 @@ export const sesssionConfig: expressSession.SessionOptions = {
 	resave: false,
 	saveUninitialized: false,
 	cookie: {
-		maxAge: 60 * 60 * 1000,
+		// maxAge: 60 * 60 * 1000,
 		httpOnly: true,
 		// secure: true,
 	},
-	rolling: true,
+	// rolling: true,
 	store: sessionStore,
 };
 

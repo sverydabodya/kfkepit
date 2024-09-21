@@ -8,27 +8,27 @@ import { useNavigate } from "react-router-dom";
 import ScheduleGroupMain from "./UI-SubjectPage/ScheduleGroupMain/ScheduleGroupMain";
 
 const ScheduleGroup: FC = () => {
-  const { theme } = useTheme();
-  const user = useAuth();
-  const navigate = useNavigate();
+	const { theme } = useTheme();
+	const { user } = useAuth();
+	const navigate = useNavigate();
 
-  const handleLogoutSuccessful = () => {
-    console.log("User has been logged out");
-    navigate("/auth");
-  };
+	const handleLogoutSuccessful = () => {
+		console.log("User has been logged out");
+		navigate("/auth");
+	};
 
-  return (
-    <div className={`${classes.wrapper} ${theme}`}>
-      <div className={classes.content}>
-        <Sidebar
-          className={classes.sidebar}
-          onLogoutSuccessful={handleLogoutSuccessful}
-        />
-        <ScheduleGroupMain className={classes.main} loggedInUser={user!} />
-      </div>
-      <Footer className={classes.footer} />
-    </div>
-  );
+	return (
+		<div className={`${classes.wrapper} ${theme}`}>
+			<div className={classes.content}>
+				<Sidebar
+					className={classes.sidebar}
+					onLogoutSuccessful={handleLogoutSuccessful}
+				/>
+				<ScheduleGroupMain className={classes.main} loggedInUser={user!} />
+			</div>
+			<Footer className={classes.footer} />
+		</div>
+	);
 };
 
 export default ScheduleGroup;

@@ -7,27 +7,28 @@ import SсheduleMain from "./UI-SubjectPage/ScheduleMain/SсheduleMain";
 import { useAuth } from "./AuthProvider";
 import { useNavigate } from "react-router-dom";
 
-const SchedulePage:FC = () => {
-    const { theme } = useTheme();
-    const user = useAuth();
-    const navigate = useNavigate();
+const SchedulePage: FC = () => {
+	const { theme } = useTheme();
+	const { user } = useAuth();
+	const navigate = useNavigate();
 
-  const handleLogoutSuccessful = () => {
-    console.log("User has been logged out");
-    navigate('/auth');
-  };
+	const handleLogoutSuccessful = () => {
+		console.log("User has been logged out");
+		navigate("/auth");
+	};
 
-    return (
-  
-        <div className={`${classes.wrapper} ${theme}`}>
-          <div className={classes.content}>
-            <Sidebar className={classes.sidebar} onLogoutSuccessful={handleLogoutSuccessful} />
-            <SсheduleMain className={classes.main} loggedInUser={user!} />
-          </div>
-          <Footer className={classes.footer} />
-        </div>
-  
-    );
-}
+	return (
+		<div className={`${classes.wrapper} ${theme}`}>
+			<div className={classes.content}>
+				<Sidebar
+					className={classes.sidebar}
+					onLogoutSuccessful={handleLogoutSuccessful}
+				/>
+				<SсheduleMain className={classes.main} loggedInUser={user!} />
+			</div>
+			<Footer className={classes.footer} />
+		</div>
+	);
+};
 
 export default SchedulePage;

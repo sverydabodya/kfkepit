@@ -7,30 +7,28 @@ import { useTheme } from "./ThemeProvider";
 import { useAuth } from "./AuthProvider";
 import { useNavigate } from "react-router-dom";
 
-
 const SubjectPage: FC = () => {
+	const { theme } = useTheme();
+	const { user } = useAuth();
+	const navigate = useNavigate();
 
-  const { theme } = useTheme();
-  const user = useAuth();
-  const navigate = useNavigate();
+	const handleLogoutSuccessful = () => {
+		console.log("User has been logged out");
+		navigate("/auth");
+	};
 
-
-    const handleLogoutSuccessful = () => {
-      console.log("User has been logged out");
-      navigate('/auth');
-    };
-
-  return (
-
-      <div className={`${classes.wrapper} ${theme}`}>
-        <div className={classes.content}>
-          <Sidebar onLogoutSuccessful={handleLogoutSuccessful} className={classes.sidebar} />
-          <Main className={classes.main} loggedInUser={user!} />
-        </div>
-        <Footer className={classes.footer} />
-      </div>
-
-  );
-}
+	return (
+		<div className={`${classes.wrapper} ${theme}`}>
+			<div className={classes.content}>
+				<Sidebar
+					onLogoutSuccessful={handleLogoutSuccessful}
+					className={classes.sidebar}
+				/>
+				<Main className={classes.main} loggedInUser={user!} />
+			</div>
+			<Footer className={classes.footer} />
+		</div>
+	);
+};
 
 export default SubjectPage;

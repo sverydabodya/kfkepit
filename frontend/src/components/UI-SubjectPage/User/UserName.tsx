@@ -31,6 +31,8 @@ const UserName = ({user, onLogoutSuccessful = () => {}}:userProp) => {
             alert(error);
         }
     }
+    console.log(user);
+    
 
 
     return ( 
