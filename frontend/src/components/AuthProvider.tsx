@@ -1,39 +1,48 @@
-import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
-import { User } from '../model/user';
-import { getLoggedInUser } from '../network/auth_api';
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { User } from "../model/user";
+import { getLoggedInUser } from "../network/auth_api";
 
-const AuthContext = createContext<User | null>(null);
+const AuthContext = createContext<{
+  user: User | null;
+  loading: boolean;
+  setUser: (user: User | null) => void;
+} | null>(null);
 
 export default function AuthProvider({ children }: PropsWithChildren) {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const storedUser = localStorage.getItem("loggedInUser");
-        if (storedUser) {
-          setUser(JSON.parse(storedUser));
-        } else {
-          const loggedInUser = await getLoggedInUser();
-          if (loggedInUser) {
-            localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
-          }
-          setUser(loggedInUser);
-        }
+        const loggedInUser = await getLoggedInUser();
+        setUser(loggedInUser);
       } catch {
         setUser(null);
+      } finally {
+        setLoading(false);
       }
     };
     fetchUser();
   }, []);
 
-  return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ user, loading, setUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

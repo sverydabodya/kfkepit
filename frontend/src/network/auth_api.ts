@@ -40,7 +40,6 @@ export interface LoginCredentials {
   password: string;
   rememberMe: boolean;
 }
-
 export async function login(credentials: LoginCredentials): Promise<User> {
   const response = await fetchData(
     `${import.meta.env.VITE_HOST}/api/v1/users/login`,
@@ -55,12 +54,9 @@ export async function login(credentials: LoginCredentials): Promise<User> {
   );
   const user = await response.json();
 
-  if (credentials.rememberMe) {
-    localStorage.setItem("loggedInUser", JSON.stringify(user));
-  }
-
   return user;
 }
+
 export async function getSubjects() {
   const response = await fetchData(
     `${import.meta.env.VITE_HOST}/api/v1/subjects`,

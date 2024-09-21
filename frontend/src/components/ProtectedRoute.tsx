@@ -1,18 +1,20 @@
-import { PropsWithChildren, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from './AuthProvider';
+import { PropsWithChildren, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthProvider";
 
 export default function ProtectedRoute({ children }: PropsWithChildren) {
-  const user = useAuth();
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-
-    const storedUser = localStorage.getItem("loggedInUser");
-    if (!storedUser && user === null) {
-      navigate('/auth', { replace: true });
+    if (!loading && user === null) {
+      navigate("/auth", { replace: true });
     }
-  }, [navigate, user]);
+  }, [navigate, user, loading]);
+
+  if (loading) {
+    return <div></div>;
+  }
 
   return user ? children : null;
 }
