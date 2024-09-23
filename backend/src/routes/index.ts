@@ -1,5 +1,5 @@
 import express from "express";
-import usersRouter from "./users";
+import authRouter from "./auth";
 import materialsRouter from "./materials";
 import schedulesRouter from "./schedules";
 import subjectsRouter from "./subjects";
@@ -10,7 +10,7 @@ import { auth } from "../middlewares/auth";
 
 const router = express.Router();
 
-router.use("/users", usersRouter);
+router.use("/auth", authRouter);
 router.use("/posts", postsRouter);
 router.use(auth);
 router.use("/materials", materialsRouter);

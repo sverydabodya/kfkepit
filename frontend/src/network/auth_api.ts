@@ -29,7 +29,7 @@ async function fetchData(input: RequestInfo, init?: RequestInit) {
 
 export async function getLoggedInUser(): Promise<User> {
   const response = await fetchData(
-    `${import.meta.env.VITE_HOST}/api/v1/users`,
+    `${import.meta.env.VITE_HOST}/api/v1/auth`,
     { method: "GET" }
   );
   return response.json();
@@ -42,7 +42,7 @@ export interface LoginCredentials {
 }
 export async function login(credentials: LoginCredentials): Promise<User> {
   const response = await fetchData(
-    `${import.meta.env.VITE_HOST}/api/v1/users/login`,
+    `${import.meta.env.VITE_HOST}/api/v1/auth/login`,
     {
       method: "POST",
       headers: {
@@ -58,7 +58,7 @@ export async function login(credentials: LoginCredentials): Promise<User> {
 }
 
 export async function logout() {
-	await fetchData(`${import.meta.env.VITE_HOST}/api/v1/users/logout`, {
+	await fetchData(`${import.meta.env.VITE_HOST}/api/v1/auth/logout`, {
 		method: "POST",
 	});
 }
