@@ -29,7 +29,7 @@ export const getMaterialById = async (materialId: string) => {
 export const getMaterialsBySubject = async (
 	groupId: string,
 	subjectName: string,
-	page: string = null,
+	page: number = null,
 	take: number = 10
 ) => {
 	try {
@@ -45,7 +45,7 @@ export const getMaterialsBySubject = async (
 				createdAt: "desc",
 			},
 			take,
-			skip: page ? parseInt(page) * take : 0,
+			skip: page ? page * take : 0,
 		});
 
 		return materials;
@@ -59,7 +59,7 @@ export const getMaterialsByGroup = async (
 	groups: string[],
 	subject: string,
 	userId: string,
-	page: string = null,
+	page: number = null,
 	take: number = 10
 ) => {
 	try {
@@ -77,7 +77,7 @@ export const getMaterialsByGroup = async (
 					createdAt: "desc",
 				},
 				take,
-				skip: page ? parseInt(page) * take : 0,
+				skip: page ? page * take : 0,
 			});
 		} else {
 			materials = await prisma.material.findMany({
@@ -93,7 +93,7 @@ export const getMaterialsByGroup = async (
                     groups: true,
                 },
 				take,
-				skip: page ? parseInt(page) * take : 0,
+				skip: page ? page * take : 0,
 			});
 		}
 

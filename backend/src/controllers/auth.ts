@@ -76,7 +76,7 @@ export const logout: RequestHandler = (req, res, next) => {
 		path: "/",
 		secure: false,
 		sameSite: "none",
-		domain: process.env.DOMAIN,
+		domain: req.hostname,
 	});
 
 	req.session.destroy((error) => {

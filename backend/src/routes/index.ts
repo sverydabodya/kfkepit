@@ -6,6 +6,7 @@ import subjectsRouter from "./subjects";
 import postsRouter from "./posts";
 import groupsRouter from "./groups";
 import coursesRouter from "./courses";
+import usersRouter from "./users";
 import { auth } from "../middlewares/auth";
 
 const router = express.Router();
@@ -18,6 +19,7 @@ router.use("/schedules", schedulesRouter);
 router.use("/subjects", subjectsRouter);
 router.use("/groups", groupsRouter);
 router.use("/courses", coursesRouter);
+router.use("/users", usersRouter);
 
 router.all("*", (req, res) => {
 	res.status(404).json({ error: "Route does not exist" });

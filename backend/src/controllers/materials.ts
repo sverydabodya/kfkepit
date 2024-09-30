@@ -58,7 +58,7 @@ export const getMaterialsBySubject: RequestHandler<
 		const materials = await MaterialsService.getMaterialsBySubject(
 			user.groupId,
 			subjectName,
-			page
+			parseInt(page)
 		);
 
 		if (materials.length === 0) {
@@ -86,7 +86,7 @@ export const getMaterialsByGroup: RequestHandler<
 			groups,
 			subject,
 			user.id,
-			page
+			parseInt(page)
 		);
 
 		if (materials.length === 0) {
