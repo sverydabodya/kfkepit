@@ -3,8 +3,9 @@ import * as PostsService from "../services/posts";
 import createHttpError from "http-errors";
 
 export const getPosts: RequestHandler = async (req, res, next) => {
+	const page = req.query.page as string;
 	try {
-		const posts = await PostsService.getAllPosts();
+		const posts = await PostsService.getAllPosts(parseInt(page));
 
 		if (posts.length === 0) {
 			throw createHttpError(404, "Posts not found");

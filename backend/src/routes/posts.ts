@@ -9,7 +9,11 @@ import { postsMulterConfig } from "../config/config";
 const router = express.Router();
 const upload = multer(postsMulterConfig);
 
-router.get("/", PostsController.getPosts);
+router.get(
+	"/",
+	validateRequest({ query: z.object({ page: z.string().optional() }) }),
+	PostsController.getPosts
+);
 router.get(
 	"/:slug",
 	validateRequest({ params: z.object({ slug: z.string() }) }),

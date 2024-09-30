@@ -2,12 +2,14 @@ import prisma from "./db";
 import path from "path";
 import { promises as fs } from "fs";
 
-export const getAllPosts = async () => {
+export const getAllPosts = async (page: number = null, take: number = 10) => {
 	try {
 		const posts = await prisma.post.findMany({
 			orderBy: {
 				createdAt: "desc",
 			},
+			take,
+			skip: page ? page * take : 0,
 		});
 
 		return posts;
