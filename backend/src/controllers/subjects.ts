@@ -17,3 +17,27 @@ export const getAllSubjects: RequestHandler = async (req, res, next) => {
 		next(error);
 	}
 };
+
+export const createSubject: RequestHandler = async (req, res, next) => {
+	const { name, teacherId, groups } = req.body;
+	try {
+		const subject = await SubjectsService.createSubject(
+			name,
+			teacherId,
+			groups.split(",")
+		);
+		res.json(subject).status(200);
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const deleteSubject: RequestHandler = async (req, res, next) => {
+	const id = req.params.id;
+	try {
+		const subject = await SubjectsService.deleteSubject(id);
+		res.json(subject).status(200);
+	} catch (error) {
+		next(error);
+	}
+};

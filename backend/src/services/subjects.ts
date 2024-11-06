@@ -17,3 +17,36 @@ export const getAllSubjects = async (groupId: string) => {
 		throw new Error(`Failed to fetch subjects`);
 	}
 };
+
+export const createSubject = async (
+	name: string,
+	teacherId: string,
+	groups: string[]
+) => {
+	try {
+		const subject = await prisma.subject.create({
+			data: {
+				name,
+				teacherId,
+				...(groups && {
+					groups: {
+						connect: groups.map((groupId) => ({ id: groupId })),
+					},
+				}),
+			},
+		});
+
+		return subject;
+	} catch (error) {
+		throw new Error("Failed to create subject");
+	}
+};
+
+export const deleteSubject = async (id: string) => {
+	try {
+		const subject = await prisma.subject.delete({ where: { id } });
+		return subject;
+	} catch (error) {
+		throw new Error("Failed to delete subject with id " + id);
+	}
+};
